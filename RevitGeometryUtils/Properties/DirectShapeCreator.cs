@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VZTagMaterial.Standard;
-using static VZTagMaterial.Auxiliar.RoomCumulativeMaterial;
 
 namespace VZTagMaterial.Auxiliar
 {

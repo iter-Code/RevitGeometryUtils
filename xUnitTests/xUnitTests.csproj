@@ -46,14 +46,30 @@
       <HintPath>..\packages\ModPlus.Revit.API.2021.2.0.0\lib\RevitAPIUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UIFramework, Version=21.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\packages\ModPlus.Revit.API.2021.2.0.0\lib\UIFramework.dll</HintPath>
       <Private>False</Private>
@@ -94,6 +110,13 @@
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.1.0.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
     <Analyzer Include="..\packages\xunit.analyzers.1.0.0\analyzers\dotnet\cs\xunit.analyzers.fixes.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RevitGeometryUtils\RevitGeometryUtils.csproj">
+      <Project>{479BCD05-9C80-4436-AB59-E97B6769BC7E}</Project>
+      <Name>RevitGeometryUtils</Name>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

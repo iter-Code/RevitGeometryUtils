@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VZTagMaterial.Auxiliar
+namespace RevitGeometryUtils
 {
     public class DynamoLineOutput
     {

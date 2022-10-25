@@ -7,25 +7,45 @@ using System.Linq;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using AppServ = Autodesk.Revit.ApplicationServices;
-using VZTagMaterial.Standard;
-using static VZTagMaterial.Auxiliar.iCGeometry;
 using Autodesk.Revit.ApplicationServices;
 
-namespace VZTagMaterial.Auxiliar
+namespace RevitGeometryUtils
 {
+    public static class DocInfo
+    {
+        // CAMPOS ====================
+        public static UIApplication UIApp { get; private set; }
+        public static UIDocument UIDoc { get; private set; }
+        public static Document Doc { get; private set; }
+        public static View ActiveView { get; private set; }
+
+        // CONSTRUTOR ====================
+        static DocInfo() { }
+
+        // MÉTODOS ====================
+        public static void Init(ExternalCommandData commandData)
+        {
+            UIApp = commandData.Application;
+            UIDoc = UIApp.ActiveUIDocument;
+            Doc = UIDoc.Document;
+            ActiveView = Doc.ActiveView;
+        }
+    }
     public class iCGeometry
     {
-        public static Application Application = DocInfo.Doc.Application;
-        public static double ShortCurveTolerance = Application.ShortCurveTolerance;
-        public static double AngleTolerance = Application.AngleTolerance;
-        public static double VertexTolerance = Application.VertexTolerance;
+        //public static Application Application = DocInfo.Doc.Application;
+        //public static double ShortCurveTolerance = Application.ShortCurveTolerance;
+        //public static double AngleTolerance = Application.AngleTolerance;
+        //public static double VertexTolerance = Application.VertexTolerance;
         public const int CoordinatesDecimalsToRound = 1;
-        
-        
+
+        public static double ShortCurveTolerance = 0.00256026455729167;
+        public static double AngleTolerance = 0.00174532925199433;
+        public static double VertexTolerance = 0.0005233832795;
+
+
         //METHODS
 
-        
-        
 
 
 

@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ArcExtensions.cs" />
     <Compile Include="Extensions\CurveExtensions.cs" />
     <Compile Include="Extensions\CurveLoopExtensions.cs" />
     <Compile Include="Extensions\LineExtensions.cs" />

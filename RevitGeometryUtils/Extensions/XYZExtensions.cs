@@ -11,6 +11,8 @@ namespace RevitGeometryUtils.Extensions
 {
     public static class XYZExtensions
     {
+        public static double VertexTolerance = 0.0005233832795;
+
         //Point 3D
         public static bool IsNumericallyEqualTo(this XYZ thisPoint, XYZ pointToCompare)
         {

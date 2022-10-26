@@ -1,4 +1,5 @@
 ﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.DB.Mechanical;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,8 @@ namespace RevitGeometryUtils.Extensions
             XZPlane,
             YZPlane
         }
+
+        public static double AngleTolerance = 0.00174532925199433;
 
         //Line
         public static Line ProjectOnGlobalPlane(this Line line, GlobalPlane globalPlane)
@@ -87,12 +90,24 @@ namespace RevitGeometryUtils.Extensions
         {
             return firstLine.Direction.IsAlmostParallelTo(secondLine.Direction);
         }
-
-
-
-        public static Line ExtendLineByEndAndValue(Line line, double value, CurveEnd curveEnd)
+        public static double[] GetAnglesToGlobalAxes(this Line line)
         {
+            XYZ lineVector = line.Direction;
 
+            double angleToGlobalXAxis = lineVector.AngleTo(XYZ.BasisX);
+            double angleToGlobalYAxis = lineVector.AngleTo(XYZ.BasisY);
+            double angleToGlobalZAxis = lineVector.AngleTo(XYZ.BasisZ);
+            double[] anglesToGlobalAxes = new double[3] { angleToGlobalXAxis, angleToGlobalYAxis, angleToGlobalZAxis };
+
+            return anglesToGlobalAxes;
+        }
+        public static bool IsSlightlyOffAxis(this Line line)
+        {
+            double[] anglesToGlobalAxes = GetAnglesToGlobalAxes(line);
+            return anglesToGlobalAxes.Any(x => x > AngleTolerance && x <= AngleTolerance * 2);
+        }
+        public static Line ExtendByEndAndValue(this Line line, double value, CurveEnd curveEnd)
+        {
             int endToExtend = 1;
             int endToMaintain = 0;
             XYZ directionToExtend = line.Direction;
@@ -106,24 +121,21 @@ namespace RevitGeometryUtils.Extensions
 
             XYZ pointToMaintain = line.GetEndPoint(endToMaintain);
             XYZ pointToChange = line.GetEndPoint(endToExtend) + (directionToExtend * value);
-            Line extendedLine;
-
-
-            extendedLine = curveEnd == CurveEnd.Start ? Line.CreateBound(pointToChange, pointToMaintain) : Line.CreateBound(pointToMaintain, pointToChange);
+            Line extendedLine = curveEnd == CurveEnd.Start ? Line.CreateBound(pointToChange, pointToMaintain) : Line.CreateBound(pointToMaintain, pointToChange);
 
             return extendedLine;
         }
-        public static Line ExtendLineByVector(Line line, XYZ vector)
+        public static Line ExtendByVector(this Line line, XYZ vector)
         {
             int endToExtend = 1;
             int endToMaintain = 0;
 
-            if (AreVectorsAlmostParallel(vector.Normalize(), line.Direction.Normalize()))
+            if (vector.IsAlmostParallelTo(line.Direction))
             {
                 return null;
             }
 
-            bool doesVectorsPointToSameDirection = vector.Normalize().IsAlmostEqualTo(line.Direction.Normalize());
+            bool doesVectorsPointToSameDirection = vector.IsAlmostEqualTo(line.Direction);
 
             if (!doesVectorsPointToSameDirection)
             {
@@ -133,28 +145,22 @@ namespace RevitGeometryUtils.Extensions
 
             XYZ pointToMaintain = line.GetEndPoint(endToMaintain);
             XYZ pointToChange = line.GetEndPoint(endToExtend) + vector;
-            Line extendedLine;
-
-            if (!doesVectorsPointToSameDirection)
-            {
-                extendedLine = Line.CreateBound(pointToChange, pointToMaintain);
-            }
-            else
-            {
-                extendedLine = Line.CreateBound(pointToMaintain, pointToChange);
-            }
+            Line extendedLine = doesVectorsPointToSameDirection ? Line.CreateBound(pointToMaintain, pointToChange) : Line.CreateBound(pointToChange, pointToMaintain);
 
             return extendedLine;
         }
         public static Line ExtendLineByPointAndValue(Line line, double value, XYZ pointEndToExtend)
         {
-            if (pointEndToExtend.IsAlmostEqualTo(line.GetEndPoint(0)))
+            XYZ lineStartPoint = line.GetEndPoint(0);
+            XYZ lineEndPoint = line.GetEndPoint(1);
+
+            if (pointEndToExtend.IsNumericallyEqualTo(lineStartPoint))
             {
-                return ExtendLineByEndAndValue(line, value, CurveEnd.Start);
+                return line.ExtendByEndAndValue(value, CurveEnd.Start);
             }
-            else if (pointEndToExtend.IsAlmostEqualTo(line.GetEndPoint(1)))
+            else if (pointEndToExtend.IsAlmostEqualTo(lineEndPoint))
             {
-                return ExtendLineByEndAndValue(line, value, CurveEnd.End);
+                return line.ExtendByEndAndValue(value, CurveEnd.End);
             }
             else
             {
@@ -162,15 +168,14 @@ namespace RevitGeometryUtils.Extensions
                 return null;
             }
         }
-
-        public static Line RemakeLineWithNewPoint(Line line, XYZ newPoint, CurveEnd endToChange)
+        public static Line ReconstructWithNewPoint(this Line line, XYZ newPoint, CurveEnd endToChange)
         {
             XYZ newStart = line.GetEndPoint(0);
             XYZ newEnd = newPoint;
 
             if (endToChange == CurveEnd.Start)
             {
-                newStart = newEnd;
+                newStart = newPoint;
                 newEnd = line.GetEndPoint(1);
             }
 
@@ -178,83 +183,26 @@ namespace RevitGeometryUtils.Extensions
 
             return newLine;
         }
-        public static Line RemakeLineWithNewPointMantainingDirection(Line line, XYZ newPoint, CurveEnd endToChange)
+        public static Line ReconstructIfSlightlyOffAxis(this Line line, CurveEnd endToChange)
         {
-            Line newLine = RemakeLineWithNewPoint(line, newPoint, endToChange);
-
-            if (endToChange == CurveEnd.Start)
-            {
-                newLine = newLine.CreateReversed() as Line;
-            }
-
-            //if (!newLine.Direction.Normalize().IsAlmostEqualTo(line.Direction.Normalize()))
-            //{
-            //    newLine = newLine.CreateReversed() as Line;
-            //}
-
-            return newLine;
-        }
-        public static double[] GetLineAnglesToGlobalAxes(Line line)
-        {
-            XYZ lineVector = line.Direction;
-
-            double angleToGlobalXAxis = lineVector.AngleTo(XYZ.BasisX);
-            double angleToGlobalYAxis = lineVector.AngleTo(XYZ.BasisY);
-            double angleToGlobalZAxis = lineVector.AngleTo(XYZ.BasisZ);
-            double[] anglesToGlobalAxes = new double[3] { angleToGlobalXAxis, angleToGlobalYAxis, angleToGlobalZAxis };
-
-            return anglesToGlobalAxes;
-        }
-        public static bool IsLineSlightlyOffAxis(double[] lineAnglesToGlobalAxes)
-        {
-            return lineAnglesToGlobalAxes.Any(x => x <= AngleTolerance * 2 && x > VertexTolerance);
-        }
-        public static Line RemakeLineSlightlyOffAxis(Line line, CurveEnd endToChange)
-        {
-            int endToMaintain = 1;
-
-            if ((int)endToChange == 1)
-            {
-                endToMaintain = 0;
-            }
+            int endToMaintain = (int)endToChange == 1 ? 0 : 1;
 
             XYZ endToMaintainPoint = line.GetEndPoint(endToMaintain);
             XYZ endToChangePoint = line.GetEndPoint((int)endToChange);
             XYZ lineDirection = line.Direction;
 
-
-            double newPointX = endToChangePoint.X;
-            double newPointY = endToChangePoint.Y;
-            double newPointZ = endToChangePoint.Z;
-
-            if (lineDirection.X <= AngleTolerance * 2 && lineDirection.X > VertexTolerance)
-            {
-                newPointX = endToMaintainPoint.X;
-            }
-
-            if (lineDirection.Y <= AngleTolerance * 2 && lineDirection.Y > VertexTolerance)
-            {
-                newPointY = endToMaintainPoint.Y;
-            }
-
-            if (lineDirection.Z <= AngleTolerance * 2 && lineDirection.Z > VertexTolerance)
-            {
-                newPointZ = endToMaintainPoint.Z;
-            }
-
+            double newPointX = (lineDirection.X > AngleTolerance && lineDirection.X <= AngleTolerance * 2) ? endToMaintainPoint.X : endToChangePoint.X;
+            double newPointY = (lineDirection.Y > AngleTolerance && lineDirection.Y <= AngleTolerance * 2) ? endToMaintainPoint.Y : endToChangePoint.Y;
+            double newPointZ = (lineDirection.Z > AngleTolerance && lineDirection.Z <= AngleTolerance * 2) ? endToMaintainPoint.Z : endToChangePoint.Z;
+            
             XYZ newPoint = new XYZ(newPointX, newPointY, newPointZ);
-            Line newLine = RemakeLineWithNewPointMantainingDirection(line, newPoint, endToChange);
+            Line newLine = line.ReconstructWithNewPoint(newPoint, endToChange);
 
             return newLine;
         }
 
 
-
-
-
-
-
-        public static XYZ GetPointIntersectionBetweenTwoLinesOnZPlane(Line firstLine, Line secondLine, double zValue)
+        public static XYZ GetPointIntersectionWithAnotherLineOnXYPlane(this Line firstLine, Line secondLine, double zValue)
         {
             XYZ[] firstLinePoints = new XYZ[2] { firstLine.GetEndPoint(0), firstLine.GetEndPoint(1) };
             XYZ[] secondLinePoints = new XYZ[2] { secondLine.GetEndPoint(0), secondLine.GetEndPoint(1) };
@@ -282,7 +230,13 @@ namespace RevitGeometryUtils.Extensions
                 return new XYZ(x, y, zValue);
             }
         }
-        
+
+
+
+
+
+
+
         public static List<XYZ> GetSequentialVerticesFromSequentialLines(List<Curve> sequentialCurves)
         {
             List<XYZ> vertices = sequentialCurves

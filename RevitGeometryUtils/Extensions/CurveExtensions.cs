@@ -21,9 +21,13 @@ namespace RevitGeometryUtils.Extensions
         public static double AngleTolerance = 0.00174532925199433;
         public static double VertexTolerance = 0.0005233832795;
 
-        public static bool IsBelowLengthTolerance(this Curve curve, double tolerance = 0.00256026455729167)
+        public static bool IsBelowLengthTolerance(this Curve curve)
         {
             return curve.Length <= ShortCurveTolerance ? true : false;
+        }
+        public static bool IsBelowLengthTolerance(this Curve curve, double tolerance)
+        {
+            return curve.Length <= tolerance ? true : false;
         }
         public static Curve TranslateByVector(this Curve curve, XYZ vector)
         {

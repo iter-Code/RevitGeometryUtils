@@ -54,6 +54,7 @@
     <Compile Include="Extensions\LineExtensions.cs" />
     <Compile Include="Extensions\PlanarFaceExtensions.cs" />
     <Compile Include="Extensions\PlaneExtensions.cs" />
+    <Compile Include="Extensions\SolidExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DirectShapeCreator.cs" />
     <Compile Include="DynamoLineOutput.cs" />

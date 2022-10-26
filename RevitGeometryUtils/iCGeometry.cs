@@ -61,29 +61,7 @@ namespace RevitGeometryUtils
 
 
         //Point2D
-        public static bool IsPointInsideSolid(Solid solid, XYZ point)
-        {
-            SolidCurveIntersectionOptions solidCurveIntersectionOptions = new SolidCurveIntersectionOptions();
-            solidCurveIntersectionOptions.ResultType = SolidCurveIntersectionMode.CurveSegmentsInside;
-
-            Line line = Line.CreateBound(point, point.Add(XYZ.BasisX));
-
-            double tolerance = 0.000001;
-
-            SolidCurveIntersection solidCurveIntersection = solid.IntersectWithCurve(line, solidCurveIntersectionOptions);
-
-            for (int i = 0; i < solidCurveIntersection.SegmentCount; i++)
-            {
-                Curve curve = solidCurveIntersection.GetCurveSegment(i);
-
-                if (point.IsAlmostEqualTo(curve.GetEndPoint(0), tolerance) || point.IsAlmostEqualTo(curve.GetEndPoint(1), tolerance))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        
         public static List<XYZ> ProjectListOfPointsInZPlane(List<XYZ> points)
         {
             List<XYZ> projectedPoints = points

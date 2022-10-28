@@ -25,7 +25,14 @@ namespace RevitGeometryUtils.Extensions
 
         public static double AngleTolerance = 0.00174532925199433;
 
-        //Line
+        /// <summary>
+        /// Projects this line onto a global plane.
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="globalPlane"></param>
+        /// <returns>
+        /// The projected line.
+        /// </returns>
         public static Line ProjectOnGlobalPlane(this Line line, GlobalPlane globalPlane)
         {
             XYZ originalStartPoint = line.GetEndPoint(0);
@@ -36,6 +43,15 @@ namespace RevitGeometryUtils.Extensions
 
             return newLine;
         }
+
+        /// <summary>
+        /// Projects this line onto a global plane and round its start and end coordinates.
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="globalPlane"></param>
+        /// <returns>
+        /// The projected line with the start and end coordinates rounded.
+        /// </returns>
         public static Line ProjectOnGlobalPlane(this Line line, GlobalPlane globalPlane, int digitsToRoundCoordinates)
         {
             XYZ originalStartPoint = line.GetEndPoint(0);
@@ -46,7 +62,9 @@ namespace RevitGeometryUtils.Extensions
 
             return newLine;
         }
-        public static Line ProjectLineOnPlaneByPlanarFace(this Line line, PlanarFace planarFace)
+
+
+        public static Line ProjectOnSamePlaneAsPlanarFace(this Line line, PlanarFace planarFace)
         {
             XYZ originalStartPoint = line.GetEndPoint(0);
             XYZ originalEndPoint = line.GetEndPoint(1);
@@ -56,7 +74,7 @@ namespace RevitGeometryUtils.Extensions
 
             return newLine;
         }
-        public static Line ProjectLineOnPlaneByPlanarFace(this Line line, PlanarFace planarFace, int digitsToRoundCoordinates)
+        public static Line ProjectOnSamePlaneAsPlanarFace(this Line line, PlanarFace planarFace, int digitsToRoundCoordinates)
         {
             XYZ originalStartPoint = line.GetEndPoint(0);
             XYZ originalEndPoint = line.GetEndPoint(1);

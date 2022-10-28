@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static RevitGeometryUtils.iCGeometry;
 
 namespace RevitGeometryUtils.Extensions
 {
@@ -22,14 +21,42 @@ namespace RevitGeometryUtils.Extensions
         public static double AngleTolerance = 0.00174532925199433;
         public static double VertexTolerance = 0.0005233832795;
 
+        /// <summary>
+        /// Verifies wheter this curve has the length below the limit values of Revit for curve length tolerance.
+        /// </summary>
+        /// <param name="curve"></param>
+        /// <returns>
+        /// The boolean value that indicates if this curve has the length below the Revit tolerance.
+        /// </returns>
+        /// <remarks>
+        /// The standard Short Curve Tolerance is approximately 0.00256026455729167 feet.
+        /// </remarks>
         public static bool IsBelowLengthTolerance(this Curve curve)
         {
             return curve.Length <= ShortCurveTolerance ? true : false;
         }
+
+        /// <summary>
+        /// Verifies wheter this curve has the length below a given limit value for curve length tolerance.
+        /// </summary>
+        /// <param name="curve"></param>
+        /// <param name="tolerance"></param>
+        /// <returns>
+        /// The boolean value that indicates if this curve has the length below a given limit value of tolerance.
+        /// </returns>
         public static bool IsBelowLengthTolerance(this Curve curve, double tolerance)
         {
             return curve.Length <= tolerance ? true : false;
         }
+
+        /// <summary>
+        /// Translate this curve by a given vector.
+        /// </summary>
+        /// <param name="curve"></param>
+        /// <param name="vector"></param>
+        /// <returns>
+        /// The translated curve.
+        /// </returns>
         public static Curve TranslateByVector(this Curve curve, XYZ vector)
         {
             Transform transform = Transform.CreateTranslation(vector);
@@ -37,6 +64,18 @@ namespace RevitGeometryUtils.Extensions
 
             return translatedCurve;
         }
+
+        /// <summary>
+        /// Projects this curve onto a global plane.
+        /// </summary>
+        /// <param name="curve"></param>
+        /// <param name="globalPlane"></param>
+        /// <returns>
+        /// The projected curve.
+        /// </returns>
+        /// <remarks>
+        /// It doesn't support yet CylindricalHelix, HermiteSPline and NurbSpline.
+        /// </remarks>
         public static Curve ProjectOnGlobalPlane(this Curve curve, GlobalPlane globalPlane)
         {
             Curve zPlanifiedCurve;
@@ -67,6 +106,8 @@ namespace RevitGeometryUtils.Extensions
 
             return zPlanifiedCurve;
         }
+
+
 
 
 

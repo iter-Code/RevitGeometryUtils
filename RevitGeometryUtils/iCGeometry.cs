@@ -1420,11 +1420,11 @@ namespace RevitGeometryUtils
 
         /*
         NÃO IMPLEMENTADAS
-        public static Ellipse ProjectArcOnPlaneByPlanarFace(Ellipse ellipse, PlanarFace planarFace)
+        public static Ellipse ProjectArcOnSamePlaneAsPlanarFace(Ellipse ellipse, PlanarFace planarFace)
         {
             throw new NotImplementedException();
         }
-        public static Ellipse ProjectArcOnPlaneByPlanarFace(Ellipse ellipse, PlanarFace planarFace, int digitsToRoundCoordinates)
+        public static Ellipse ProjectArcOnSamePlaneAsPlanarFace(Ellipse ellipse, PlanarFace planarFace, int digitsToRoundCoordinates)
         {
             throw new NotImplementedException();
         }

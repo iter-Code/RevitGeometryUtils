@@ -17,7 +17,15 @@ namespace RevitGeometryUtils.Extensions
         }
 
         //Ellipse
-        public static Ellipse ProjectEllipseOnGlobalPlane(this Ellipse ellipse, GlobalPlane globalPlane)
+        /// <summary>
+        /// Projects this ellipse onto a global plane.
+        /// </summary>
+        /// <param name="ellipse"></param>
+        /// <param name="globalPlane"></param>
+        /// <returns>
+        /// The ellipse projection on the global plane.
+        /// </returns>
+        public static Ellipse ProjectOnGlobalPlane(this Ellipse ellipse, GlobalPlane globalPlane)
         {
             XYZ originalCenter = ellipse.Center;
             XYZ originalXDirection = ellipse.XDirection;
@@ -34,7 +42,17 @@ namespace RevitGeometryUtils.Extensions
 
             return newEllipse as Ellipse;
         }
-        public static Ellipse ProjectEllipseOnGlobalPlane(this Ellipse ellipse, GlobalPlane globalPlane, int digitsToRoundCoordinates)
+
+        /// <summary>
+        /// Projects this arc onto a global plane and rounds its center, x-direction and y-direction values.
+        /// </summary>
+        /// <param name="ellipse"></param>
+        /// <param name="globalPlane"></param>
+        /// <param name="digitsToRoundCoordinates"></param>
+        /// <returns>
+        /// The arc projection on the global plane with rounded center, x-direction and y-direction values.
+        /// </returns>
+        public static Ellipse ProjectOnGlobalPlane(this Ellipse ellipse, GlobalPlane globalPlane, int digitsToRoundCoordinates)
         {
             XYZ originalCenter = ellipse.Center;
             XYZ originalXDirection = ellipse.XDirection;
@@ -54,11 +72,11 @@ namespace RevitGeometryUtils.Extensions
 
         /*
         NÃO IMPLEMENTADAS
-        public static Ellipse ProjectArcOnPlaneByPlanarFace(Ellipse ellipse, PlanarFace planarFace)
+        public static Ellipse ProjectArcOnSamePlaneAsPlanarFace(Ellipse ellipse, PlanarFace planarFace)
         {
             throw new NotImplementedException();
         }
-        public static Ellipse ProjectArcOnPlaneByPlanarFace(Ellipse ellipse, PlanarFace planarFace, int digitsToRoundCoordinates)
+        public static Ellipse ProjectArcOnSamePlaneAsPlanarFace(Ellipse ellipse, PlanarFace planarFace, int digitsToRoundCoordinates)
         {
             throw new NotImplementedException();
         }

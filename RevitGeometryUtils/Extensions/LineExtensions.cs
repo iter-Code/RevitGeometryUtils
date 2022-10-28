@@ -50,8 +50,8 @@ namespace RevitGeometryUtils.Extensions
         {
             XYZ originalStartPoint = line.GetEndPoint(0);
             XYZ originalEndPoint = line.GetEndPoint(1);
-            XYZ newStartPoint = originalStartPoint.ProjectOnSamePlaneAsFace(planarFace);
-            XYZ newEndPoint = originalEndPoint.ProjectOnSamePlaneAsFace(planarFace);
+            XYZ newStartPoint = originalStartPoint.ProjectOnSamePlaneAsPlanarFace(planarFace);
+            XYZ newEndPoint = originalEndPoint.ProjectOnSamePlaneAsPlanarFace(planarFace);
             Line newLine = Line.CreateBound(newStartPoint, newEndPoint);
 
             return newLine;
@@ -60,8 +60,8 @@ namespace RevitGeometryUtils.Extensions
         {
             XYZ originalStartPoint = line.GetEndPoint(0);
             XYZ originalEndPoint = line.GetEndPoint(1);
-            XYZ newStartPoint = originalStartPoint.ProjectOnSamePlaneAsFace(planarFace, digitsToRoundCoordinates);
-            XYZ newEndPoint = originalEndPoint.ProjectOnSamePlaneAsFace(planarFace, digitsToRoundCoordinates);
+            XYZ newStartPoint = originalStartPoint.ProjectOnSamePlaneAsPlanarFace(planarFace, digitsToRoundCoordinates);
+            XYZ newEndPoint = originalEndPoint.ProjectOnSamePlaneAsPlanarFace(planarFace, digitsToRoundCoordinates);
             Line newLine = Line.CreateBound(newStartPoint, newEndPoint);
 
             return newLine;

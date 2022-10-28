@@ -16,6 +16,14 @@ namespace RevitGeometryUtils.Extensions
             XZPlane,
             YZPlane
         }
+
+        /// <summary>
+        /// Get the normal vector of a given global plane
+        /// </summary>
+        /// <param name="globalPlane"></param>
+        /// <returns>
+        /// The XYZ normal vector of the global plane.
+        /// </returns>
         public static XYZ GetGlobalPlaneNormal(GlobalPlane globalPlane)
         {
             switch (globalPlane)

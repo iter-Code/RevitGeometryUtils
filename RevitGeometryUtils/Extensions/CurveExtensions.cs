@@ -17,6 +17,7 @@ namespace RevitGeometryUtils.Extensions
             End
         }
 
+
         public static double ShortCurveTolerance = 0.00256026455729167;
         public static double AngleTolerance = 0.00174532925199433;
         public static double VertexTolerance = 0.0005233832795;

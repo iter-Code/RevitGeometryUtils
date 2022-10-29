@@ -9,19 +9,6 @@ namespace RevitGeometryUtils.Extensions
 {
     public static class ArcExtensions
     {
-        public enum CurveEnd
-        {
-            Start,
-            End
-        }
-
-        public enum GlobalPlane
-        {
-            XYPlane,
-            XZPlane,
-            YZPlane
-        }
-
         /// <summary>
         /// Projects this arc onto a global plane.
         /// </summary>
@@ -30,7 +17,7 @@ namespace RevitGeometryUtils.Extensions
         /// <returns>
         /// The arc projection on the global plane.
         /// </returns>
-        public static Arc ProjectOnGlobalPlane(this Arc arc, GlobalPlane globalPlane)
+        public static Arc ProjectOnGlobalPlane(this Arc arc, PlaneExtensions.GlobalPlane globalPlane)
         {
             XYZ originalStartPoint = arc.GetEndPoint(0);
             XYZ originalEndPoint = arc.GetEndPoint(1);
@@ -52,7 +39,7 @@ namespace RevitGeometryUtils.Extensions
         /// <returns>
         /// The arc projection on the global plane with rounded initial, middle and final coordinates.
         /// </returns>
-        public static Arc ProjectOnGlobalPlane(this Arc arc, GlobalPlane globalPlane, int digitsToRoundCoordinates)
+        public static Arc ProjectOnGlobalPlane(this Arc arc, PlaneExtensions.GlobalPlane globalPlane, int digitsToRoundCoordinates)
         {
             XYZ originalStartPoint = arc.GetEndPoint(0);
             XYZ originalEndPoint = arc.GetEndPoint(1);

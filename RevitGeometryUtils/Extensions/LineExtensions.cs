@@ -10,19 +10,6 @@ namespace RevitGeometryUtils.Extensions
 {
     public static class LineExtensions
     {
-        public enum CurveEnd
-        {
-            Start,
-            End
-        }
-
-        public enum GlobalPlane
-        {
-            XYPlane,
-            XZPlane,
-            YZPlane
-        }
-
         public static double AngleTolerance = 0.00174532925199433;
 
         /// <summary>
@@ -33,7 +20,7 @@ namespace RevitGeometryUtils.Extensions
         /// <returns>
         /// The projected line.
         /// </returns>
-        public static Line ProjectOnGlobalPlane(this Line line, GlobalPlane globalPlane)
+        public static Line ProjectOnGlobalPlane(this Line line, PlaneExtensions.GlobalPlane globalPlane)
         {
             XYZ originalStartPoint = line.GetEndPoint(0);
             XYZ originalEndPoint = line.GetEndPoint(1);
@@ -52,7 +39,7 @@ namespace RevitGeometryUtils.Extensions
         /// <returns>
         /// The projected line with the start and end coordinates rounded.
         /// </returns>
-        public static Line ProjectOnGlobalPlane(this Line line, GlobalPlane globalPlane, int digitsToRoundCoordinates)
+        public static Line ProjectOnGlobalPlane(this Line line, PlaneExtensions.GlobalPlane globalPlane, int digitsToRoundCoordinates)
         {
             XYZ originalStartPoint = line.GetEndPoint(0);
             XYZ originalEndPoint = line.GetEndPoint(1);
@@ -124,13 +111,13 @@ namespace RevitGeometryUtils.Extensions
             double[] anglesToGlobalAxes = GetAnglesToGlobalAxes(line);
             return anglesToGlobalAxes.Any(x => x > AngleTolerance && x <= AngleTolerance * 2);
         }
-        public static Line ExtendByEndAndValue(this Line line, double value, CurveEnd curveEnd)
+        public static Line ExtendByEndAndValue(this Line line, double value, CurveExtensions.CurveEnd curveEnd)
         {
             int endToExtend = 1;
             int endToMaintain = 0;
             XYZ directionToExtend = line.Direction;
 
-            if (curveEnd == CurveEnd.Start)
+            if (curveEnd == CurveExtensions.CurveEnd.Start)
             {
                 endToExtend = 0;
                 endToMaintain = 1;
@@ -139,7 +126,7 @@ namespace RevitGeometryUtils.Extensions
 
             XYZ pointToMaintain = line.GetEndPoint(endToMaintain);
             XYZ pointToChange = line.GetEndPoint(endToExtend) + (directionToExtend * value);
-            Line extendedLine = curveEnd == CurveEnd.Start ? Line.CreateBound(pointToChange, pointToMaintain) : Line.CreateBound(pointToMaintain, pointToChange);
+            Line extendedLine = curveEnd == CurveExtensions.CurveEnd.Start ? Line.CreateBound(pointToChange, pointToMaintain) : Line.CreateBound(pointToMaintain, pointToChange);
 
             return extendedLine;
         }
@@ -174,11 +161,11 @@ namespace RevitGeometryUtils.Extensions
 
             if (pointEndToExtend.IsNumericallyEqualTo(lineStartPoint))
             {
-                return line.ExtendByEndAndValue(value, CurveEnd.Start);
+                return line.ExtendByEndAndValue(value, CurveExtensions.CurveEnd.Start);
             }
             else if (pointEndToExtend.IsAlmostEqualTo(lineEndPoint))
             {
-                return line.ExtendByEndAndValue(value, CurveEnd.End);
+                return line.ExtendByEndAndValue(value, CurveExtensions.CurveEnd.End);
             }
             else
             {
@@ -186,7 +173,7 @@ namespace RevitGeometryUtils.Extensions
                 return null;
             }
         }
-        public static Line ReconstructWithNewPoint(this Line line, XYZ newPoint, CurveEnd endToChange)
+        public static Line ReconstructWithNewPoint(this Line line, XYZ newPoint, CurveExtensions.CurveEnd endToChange)
         {
             XYZ newStart = line.GetEndPoint(0);
             XYZ newEnd = newPoint;
@@ -201,7 +188,7 @@ namespace RevitGeometryUtils.Extensions
 
             return newLine;
         }
-        public static Line ReconstructIfSlightlyOffAxis(this Line line, CurveEnd endToChange)
+        public static Line ReconstructIfSlightlyOffAxis(this Line line, CurveExtensions.CurveEnd endToChange)
         {
             int endToMaintain = (int)endToChange == 1 ? 0 : 1;
 

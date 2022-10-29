@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RevitGeometryUtils.Extensions
 {
-    public static  class PlaneExtensions
+    public static class PlaneExtensions
     {
         //Plane
         public enum GlobalPlane

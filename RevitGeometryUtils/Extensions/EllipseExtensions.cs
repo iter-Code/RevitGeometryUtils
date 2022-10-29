@@ -9,14 +9,6 @@ namespace RevitGeometryUtils.Extensions
 {
     public static class EllipseExtensions
     {
-        public enum GlobalPlane
-        {
-            XYPlane,
-            XZPlane,
-            YZPlane
-        }
-
-        //Ellipse
         /// <summary>
         /// Projects this ellipse onto a global plane.
         /// </summary>
@@ -25,7 +17,7 @@ namespace RevitGeometryUtils.Extensions
         /// <returns>
         /// The ellipse projection on the global plane.
         /// </returns>
-        public static Ellipse ProjectOnGlobalPlane(this Ellipse ellipse, GlobalPlane globalPlane)
+        public static Ellipse ProjectOnGlobalPlane(this Ellipse ellipse, PlaneExtensions.GlobalPlane globalPlane)
         {
             XYZ originalCenter = ellipse.Center;
             XYZ originalXDirection = ellipse.XDirection;
@@ -52,7 +44,7 @@ namespace RevitGeometryUtils.Extensions
         /// <returns>
         /// The arc projection on the global plane with rounded center, x-direction and y-direction values.
         /// </returns>
-        public static Ellipse ProjectOnGlobalPlane(this Ellipse ellipse, GlobalPlane globalPlane, int digitsToRoundCoordinates)
+        public static Ellipse ProjectOnGlobalPlane(this Ellipse ellipse, PlaneExtensions.GlobalPlane globalPlane, int digitsToRoundCoordinates)
         {
             XYZ originalCenter = ellipse.Center;
             XYZ originalXDirection = ellipse.XDirection;

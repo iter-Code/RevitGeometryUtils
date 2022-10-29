@@ -16,26 +16,8 @@ namespace RevitGeometryUtils.Extensions
             End
         }
 
-
-        public static double ShortCurveTolerance = 0.00256026455729167;
-        public static double AngleTolerance = 0.00174532925199433;
-        public static double VertexTolerance = 0.0005233832795;
-
-        /// <summary>
-        /// Verifies wheter this curve has the length below the limit values of Revit for curve length tolerance.
-        /// </summary>
-        /// <param name="curve"></param>
-        /// <returns>
-        /// The boolean value that indicates if this curve has the length below the Revit tolerance.
-        /// </returns>
-        /// <remarks>
-        /// The standard Short Curve Tolerance is approximately 0.00256026455729167 feet.
-        /// </remarks>
-        public static bool IsBelowLengthTolerance(this Curve curve)
-        {
-            return curve.Length <= ShortCurveTolerance ? true : false;
-        }
-
+        public const double ShortCurveTolerance = 0.00256026455729167;
+        
         /// <summary>
         /// Verifies wheter this curve has the length below a given limit value for curve length tolerance.
         /// </summary>
@@ -44,7 +26,10 @@ namespace RevitGeometryUtils.Extensions
         /// <returns>
         /// The boolean value that indicates if this curve has the length below a given limit value of tolerance.
         /// </returns>
-        public static bool IsBelowLengthTolerance(this Curve curve, double tolerance)
+        /// <remarks>
+        /// The standard Revit Short Curve Tolerance is approximately 0.00256026455729167 feet.
+        /// </remarks>
+        public static bool IsBelowLengthTolerance(this Curve curve, double tolerance = ShortCurveTolerance)
         {
             return curve.Length <= tolerance ? true : false;
         }
@@ -76,7 +61,7 @@ namespace RevitGeometryUtils.Extensions
         /// <remarks>
         /// It doesn't support yet CylindricalHelix, HermiteSPline and NurbSpline.
         /// </remarks>
-        public static Curve ProjectOnGlobalPlane(this Curve curve, GlobalPlane globalPlane)
+        public static Curve ProjectOnGlobalPlane(this Curve curve, PlaneExtensions.GlobalPlane globalPlane)
         {
             Curve zPlanifiedCurve;
             string curveTypeName = curve.GetType().Name;
@@ -84,16 +69,16 @@ namespace RevitGeometryUtils.Extensions
             switch (curveTypeName)
             {
                 case "Line":
-                    zPlanifiedCurve = ProjectLineOnGlobalPlane(curve as Line, globalPlane);
+                    zPlanifiedCurve = (curve as Line).ProjectOnGlobalPlane(globalPlane);
                     break;
 
                 case "Arc":
-                    zPlanifiedCurve = ProjectArcOnGlobalPlane(curve as Arc, globalPlane);
+                    zPlanifiedCurve = (curve as Arc).ProjectOnGlobalPlane(globalPlane);
                     break;
 
                 case "Ellipse":
                     Line line = curve as Line;
-                    zPlanifiedCurve = ProjectEllipseOnGlobalPlane(curve as Ellipse, globalPlane);
+                    zPlanifiedCurve = (curve as Ellipse).ProjectOnGlobalPlane(globalPlane);
                     break;
 
                 default:
@@ -111,7 +96,7 @@ namespace RevitGeometryUtils.Extensions
 
 
 
-        public static List<Curve> ProjectMultipleCurvesOnGlobalPlane(List<Curve> curves, GlobalPlane globalPlane)
+        public static List<Curve> ProjectMultipleCurvesOnGlobalPlane(List<Curve> curves, PlaneExtensions.GlobalPlane globalPlane)
         {
             List<Curve> projectedCurves = new List<Curve>();
 

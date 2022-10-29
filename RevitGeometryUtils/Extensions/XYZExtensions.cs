@@ -10,45 +10,12 @@ namespace RevitGeometryUtils.Extensions
 {
     public static class XYZExtensions
     {
-        public static double VertexTolerance = 0.0005233832795;
+        //Revit standard Vertex Tolerance
+        public const double VertexTolerance = 0.0005233832795;
+        //Revit standard Angle Tolerance
+        public const double AngleTolerance = 0.00174532925199433;
 
-
-        // Summary:
-        //     Rounds a double-precision floating-point value to a specified number of fractional
-        //     digits, and rounds midpoint values to the nearest even number.
-        //
-        // Parameters:
-        //   value:
-        //     A double-precision floating-point number to be rounded.
-        //
-        //   digits:
-        //     The number of fractional digits in the return value.
-        //
-        // Returns:
-        //     The number nearest to value that contains a number of fractional digits equal
-        //     to digits.
-        //
-        // Exceptions:
-        //   T:System.ArgumentOutOfRangeException:
-        //     digits is less than 0 or greater than 15.
-
-
-        /// <summary>
-        /// Verifies wheter this point has the same coordinates as another point using the limit values of Revit for Vertex Tolerance.
-        /// </summary>
-        /// <param name="thisPoint"></param>
-        /// <param name="pointToCompare"></param>
-        /// <returns>
-        /// The boolean value that indicates if this point has the same coordinates as another.
-        /// </returns>
-        /// <remarks>
-        /// The standard Vertex Tolerance is approximately 0.0005233832795 feet.
-        /// </remarks>
-        public static bool IsNumericallyEqualTo(this XYZ thisPoint, XYZ pointToCompare)
-        {
-            return (thisPoint.DistanceTo(pointToCompare) <= VertexTolerance) ? true : false;
-        }
-
+        //3DPoint
         /// <summary>
         /// Verifies wheter this point has the same coordinates as another point given the tolerance.
         /// </summary>
@@ -58,7 +25,10 @@ namespace RevitGeometryUtils.Extensions
         /// <returns>
         /// The boolean value that indicates if this point has the same coordinates as another.
         /// </returns>
-        public static bool IsNumericallyEqualTo(this XYZ thisPoint, XYZ pointToCompare, double tolerance)
+        /// /// <remarks>
+        /// The standard Revit value for vertex tolerance is approximately 0.0005233832795 feet.
+        /// </remarks>
+        public static bool IsNumericallyEqualTo(this XYZ thisPoint, XYZ pointToCompare, double tolerance = VertexTolerance)
         {
             return (thisPoint.DistanceTo(pointToCompare) <= tolerance) ? true : false;
         }
@@ -89,17 +59,17 @@ namespace RevitGeometryUtils.Extensions
         /// <returns>
         /// The point projection on the global plane.
         /// </returns>
-        public static XYZ ProjectOnGlobalPlane(this XYZ pointToProject, GlobalPlane globalPlane)
+        public static XYZ ProjectOnGlobalPlane(this XYZ pointToProject, PlaneExtensions.GlobalPlane globalPlane)
         {
             switch (globalPlane)
             {
-                case GlobalPlane.XYPlane:
+                case PlaneExtensions.GlobalPlane.XYPlane:
                     return new XYZ(pointToProject.X, pointToProject.Y, 0);
 
-                case GlobalPlane.XZPlane:
+                case PlaneExtensions.GlobalPlane.XZPlane:
                     return new XYZ(0, pointToProject.Y, pointToProject.Z);
 
-                case GlobalPlane.YZPlane:
+                case PlaneExtensions.GlobalPlane.YZPlane:
                     return new XYZ(pointToProject.X, 0, pointToProject.Z);
             }
 
@@ -115,17 +85,17 @@ namespace RevitGeometryUtils.Extensions
         /// <returns>
         /// The point projection on the global plane with rounded coordinates.
         /// </returns>
-        public static XYZ ProjectOnGlobalPlane(this XYZ pointToProject, GlobalPlane globalPlane, int digitsToRoundCoordinates)
+        public static XYZ ProjectOnGlobalPlane(this XYZ pointToProject, PlaneExtensions.GlobalPlane globalPlane, int digitsToRoundCoordinates)
         {
             switch (globalPlane)
             {
-                case GlobalPlane.XYPlane:
+                case PlaneExtensions.GlobalPlane.XYPlane:
                     return new XYZ(Math.Round(pointToProject.X, digitsToRoundCoordinates), Math.Round(pointToProject.Y, digitsToRoundCoordinates), 0);
 
-                case GlobalPlane.XZPlane:
+                case PlaneExtensions.GlobalPlane.XZPlane:
                     return new XYZ(0, Math.Round(pointToProject.Y, digitsToRoundCoordinates), Math.Round(pointToProject.Z, digitsToRoundCoordinates));
 
-                case GlobalPlane.YZPlane:
+                case PlaneExtensions.GlobalPlane.YZPlane:
                     return new XYZ(Math.Round(pointToProject.X, digitsToRoundCoordinates), 0, Math.Round(pointToProject.Z, digitsToRoundCoordinates));
             }
 
@@ -165,7 +135,7 @@ namespace RevitGeometryUtils.Extensions
             XYZ vectorBetweenOriginAndPointToProject = pointToProject - origin;
             double distanceToTranslate = vectorBetweenOriginAndPointToProject.DotProduct(normal);
             XYZ projectedPoint = pointToProject - (distanceToTranslate * normal);
-            XYZ roundedProjectedPoint = RoundPointCoordinates(projectedPoint, digitsToRoundCoordinates);
+            XYZ roundedProjectedPoint = projectedPoint.RoundCoordinates(digitsToRoundCoordinates);
 
             return roundedProjectedPoint;
         }
@@ -206,7 +176,23 @@ namespace RevitGeometryUtils.Extensions
         }
 
 
-
+        //Vector
+        /// <summary>
+        /// Verifies wheter this vector is parallel to another given a tolerance.
+        /// </summary>
+        /// <param name="firstVector"></param>
+        /// <param name="secondVector"></param>
+        /// <param name="tolerance"></param>
+        /// <returns>
+        /// The boolean value that indicates if this vector is almost parallel to another.
+        /// </returns>
+        /// <remarks>
+        /// The standard Revit angle tolerance value is approximately 0.00174532925199433 radians.
+        /// </remarks>
+        public static bool IsAlmostParallelTo(this XYZ firstVector, XYZ secondVector, double tolerance = AngleTolerance)
+        {
+            return firstVector.IsAlmostEqualTo(secondVector, tolerance) || firstVector.IsAlmostEqualTo(secondVector.Negate(), tolerance) ? true : false;
+        }
 
 
 
@@ -301,11 +287,7 @@ namespace RevitGeometryUtils.Extensions
         }
 
 
-        //Vector
-        public static bool IsAlmostParallelTo(this XYZ firstVector, XYZ secondVector, double tolerance = 0.001)
-        {
-            return firstVector.IsAlmostEqualTo(secondVector, tolerance) || firstVector.IsAlmostEqualTo(secondVector.Negate(), tolerance) ? true : false;
-        }
+        
 
 
 

@@ -1,81 +1,47 @@
 ﻿using Autodesk.Revit.DB;
+using RevitGeometryUtils.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RevitGeometryUtils.Extensions
+namespace RevitGeometryUtils.NewClasses
 {
-    public static class CurveLoopExtensions
+    public class CurveLoopCurves
     {
-        public static CurveLoopCurves GetCurveLoopCurves(this CurveLoop curveLoop)
+        public List<Curve> SequentialCurves { get; set; }
+        public bool IsOpen { get; set; }
+        public List<XYZ[]> StartAndEndPoints { get; set; }
+        public CurveLoopCurves(CurveLoop curveLoop)
         {
-            return new CurveLoopCurves(curveLoop);
+            IsOpen = curveLoop.IsOpen();
+            SequentialCurves = GetSequentialCurvesFromCurveLoop(curveLoop);
         }
 
-        public static CurveLoop PurgeCurveLoopSmallLinesAndTrimAdjacent(CurveLoop curveLoop)
+        public static List<Curve> GetSequentialCurvesFromCurveLoop(CurveLoop curveLoop)
         {
-            List<Curve> curveLoopCurves = GetSequentialCurvesFromCurveLoop(curveLoop);
-            int curveLoopLastIndex = curveLoopCurves.Count - 1;
-            List<int> smallCurvesIndexes = GetSmallCurvesIndexes(curveLoopCurves);
+            List<Curve> sequentialCurves = new List<Curve>();
+            CurveLoopIterator curveLoopIterator = curveLoop.GetCurveLoopIterator();
+            curveLoopIterator.Reset();
 
-            foreach (int smallCurveIndex in smallCurvesIndexes)
+            while (curveLoopIterator.MoveNext())
             {
-                int precedentCurveIndex = GetPrecedentCurveIndexInCurveLoop(smallCurveIndex, curveLoopLastIndex);
-                int nextCurveIndex = GetNextCurveIndexInCurveLoop(smallCurveIndex, curveLoopLastIndex);
+                Curve currentCurve = curveLoopIterator.Current;
 
-                Line firstLine = curveLoopCurves[precedentCurveIndex] as Line;
-                Line lastLine = curveLoopCurves[nextCurveIndex] as Line;
-
-                Line[] remakedLines = TrimTwoSequentialLines(firstLine, lastLine);
-
-                curveLoopCurves[precedentCurveIndex] = remakedLines[0];
-                curveLoopCurves[nextCurveIndex] = remakedLines[1];
+                if (currentCurve != null)
+                {
+                    sequentialCurves.Add(currentCurve);
+                }
             }
 
-            smallCurvesIndexes.Reverse();
-
-            foreach (int index in smallCurvesIndexes)
-            {
-                curveLoopCurves.RemoveAt(index);
-            }
-
-            CurveLoop newCurveLoop = CurveLoop.Create(curveLoopCurves);
-
-            return newCurveLoop;
+            return sequentialCurves;
         }
-        public static CurveLoop PurgeCurveLoopSmallLinesAndTrimAdjacent(CurveLoop curveLoop, double tolerance)
-        {
-            List<Curve> curveLoopCurves = GetSequentialCurvesFromCurveLoop(curveLoop);
-            int curveLoopLastIndex = curveLoopCurves.Count - 1;
-            List<int> smallCurvesIndexes = GetSmallCurvesIndexes(curveLoopCurves, tolerance);
 
-            foreach (int smallCurveIndex in smallCurvesIndexes)
-            {
-                int precedentCurveIndex = GetPrecedentCurveIndexInCurveLoop(smallCurveIndex, curveLoopLastIndex);
-                int nextCurveIndex = GetNextCurveIndexInCurveLoop(smallCurveIndex, curveLoopLastIndex);
 
-                Line firstLine = curveLoopCurves[precedentCurveIndex] as Line;
-                Line lastLine = curveLoopCurves[nextCurveIndex] as Line;
 
-                Line[] remakedLines = TrimTwoSequentialLines(firstLine, lastLine);
 
-                curveLoopCurves[precedentCurveIndex] = remakedLines[0];
-                curveLoopCurves[nextCurveIndex] = remakedLines[1];
-            }
 
-            smallCurvesIndexes.Reverse();
-
-            foreach (int index in smallCurvesIndexes)
-            {
-                curveLoopCurves.RemoveAt(index);
-            }
-
-            CurveLoop newCurveLoop = CurveLoop.Create(curveLoopCurves);
-
-            return newCurveLoop;
-        }
 
 
         public static List<CurveLoop> PurgeMultipleCurveLoopsSmallLinesAndTrimAdjacentLines(List<CurveLoop> curveLoops)
@@ -102,25 +68,8 @@ namespace RevitGeometryUtils.Extensions
 
             return filteredCurveLoops;
         }
+
         
-        private static int GetPrecedentCurveIndexInCurveLoop(int actualIndex, int curveLoopLastIndex)
-        {
-            if (actualIndex == 0)
-            {
-                return curveLoopLastIndex;
-            }
-
-            return actualIndex - 1;
-        }
-        private static int GetNextCurveIndexInCurveLoop(int actualIndex, int curveLoopLastIndex)
-        {
-            if (actualIndex == curveLoopLastIndex)
-            {
-                return 0;
-            }
-
-            return actualIndex + 1;
-        }
         private static List<int> GetSmallCurvesIndexes(List<Curve> curveLoopCurves)
         {
             List<int> smallCurvesIndexes = new List<int>();
@@ -192,7 +141,7 @@ namespace RevitGeometryUtils.Extensions
 
             return sequentialVertices;
         }
-        
+
 
         public static List<CurveLoop> JoinContinuousLinesOnMultipleCurveLoops(List<CurveLoop> curveLoops)
         {
@@ -393,18 +342,28 @@ namespace RevitGeometryUtils.Extensions
 
             return curvesIndexesThatDontConnectInCurveLoop;
         }
+        private static int GetPrecedentCurveIndexInCurveLoop(int actualIndex, int curveLoopLastIndex)
+        {
+            return actualIndex == 0 ? curveLoopLastIndex : actualIndex - 1;
+        }
+        private static int GetNextCurveIndexInCurveLoop(int actualIndex, int curveLoopLastIndex)
+        {
+            return actualIndex == curveLoopLastIndex ? 0 : actualIndex + 1;
+        }
         private static bool IsActualCurveEndPointEqualToNextCurveStartPoint(Curve actualCurve, Curve nextCurve)
         {
             XYZ actualCurveEndPoint = actualCurve.GetEndPoint(1);
             XYZ nextCurveStartPoint = nextCurve.GetEndPoint(0);
 
-            if (ArePointsNumericallyEqual(actualCurveEndPoint, nextCurveStartPoint))
-            {
-                return true;
-            }
-
-            return false;
+            return actualCurveEndPoint.IsNumericallyEqualTo(nextCurveStartPoint) ? true : false;
         }
+
+
+
+
+
+
+
         public static List<CurveLoop> CorrectCurvesThatDontConnectInMultipleCurveLoops(List<CurveLoop> curveLoops)
         {
             List<CurveLoop> newCurveLoops = new List<CurveLoop>();
@@ -467,5 +426,5 @@ namespace RevitGeometryUtils.Extensions
 
             return newCurveLoop;
         }
-    }
+    }   
 }

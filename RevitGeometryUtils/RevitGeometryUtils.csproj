@@ -49,12 +49,16 @@
   <ItemGroup>
     <Compile Include="Extensions\ArcExtensions.cs" />
     <Compile Include="Extensions\CurveExtensions.cs" />
+    <Compile Include="NewClasses\ClosedSequentialCurves.cs" />
+    <Compile Include="NewClasses\CurveLoopCurves.cs" />
     <Compile Include="Extensions\CurveLoopExtensions.cs" />
     <Compile Include="Extensions\EllipseExtensions.cs" />
     <Compile Include="Extensions\LineExtensions.cs" />
     <Compile Include="Extensions\PlanarFaceExtensions.cs" />
     <Compile Include="Extensions\PlaneExtensions.cs" />
     <Compile Include="Extensions\SolidExtensions.cs" />
+    <Compile Include="NewClasses\OpenSequentialCurves.cs" />
+    <Compile Include="NewClasses\SequentialCurve.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DirectShapeCreator.cs" />
     <Compile Include="DynamoLineOutput.cs" />

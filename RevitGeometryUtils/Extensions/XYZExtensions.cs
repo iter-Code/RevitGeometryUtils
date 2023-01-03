@@ -66,10 +66,10 @@ namespace RevitGeometryUtils.Extensions
                 case PlaneExtensions.GlobalPlane.XYPlane:
                     return new XYZ(pointToProject.X, pointToProject.Y, 0);
 
-                case PlaneExtensions.GlobalPlane.XZPlane:
+                case PlaneExtensions.GlobalPlane.YZPlane:
                     return new XYZ(0, pointToProject.Y, pointToProject.Z);
 
-                case PlaneExtensions.GlobalPlane.YZPlane:
+                case PlaneExtensions.GlobalPlane.XZPlane:
                     return new XYZ(pointToProject.X, 0, pointToProject.Z);
             }
 
@@ -92,10 +92,10 @@ namespace RevitGeometryUtils.Extensions
                 case PlaneExtensions.GlobalPlane.XYPlane:
                     return new XYZ(Math.Round(pointToProject.X, digitsToRoundCoordinates), Math.Round(pointToProject.Y, digitsToRoundCoordinates), 0);
 
-                case PlaneExtensions.GlobalPlane.XZPlane:
+                case PlaneExtensions.GlobalPlane.YZPlane:
                     return new XYZ(0, Math.Round(pointToProject.Y, digitsToRoundCoordinates), Math.Round(pointToProject.Z, digitsToRoundCoordinates));
 
-                case PlaneExtensions.GlobalPlane.YZPlane:
+                case PlaneExtensions.GlobalPlane.XZPlane:
                     return new XYZ(Math.Round(pointToProject.X, digitsToRoundCoordinates), 0, Math.Round(pointToProject.Z, digitsToRoundCoordinates));
             }
 

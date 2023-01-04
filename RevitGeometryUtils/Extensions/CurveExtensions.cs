@@ -50,6 +50,8 @@ namespace RevitGeometryUtils.Extensions
             return translatedCurve;
         }
 
+        
+        
         /// <summary>
         /// Projects this curve onto a global plane.
         /// </summary>
@@ -91,11 +93,7 @@ namespace RevitGeometryUtils.Extensions
 
             return zPlanifiedCurve;
         }
-
-
-
-
-
+   
         public static List<Curve> ProjectMultipleCurvesOnGlobalPlane(List<Curve> curves, PlaneExtensions.GlobalPlane globalPlane)
         {
             List<Curve> projectedCurves = new List<Curve>();
@@ -178,7 +176,7 @@ namespace RevitGeometryUtils.Extensions
 
         //    foreach (CurveLoop curveLoop in curveLoops)
         //    {
-        //        CurveLoop newCurveLoop = CorrectCurvesThatDontConnectInCurveLoop(curveLoop);
+        //        CurveLoop newCurveLoop = CorrectUnconnectedSequentialCurves(curveLoop);
         //        newCurveLoops.Add(newCurveLoop);
         //    }
 
@@ -226,5 +224,7 @@ namespace RevitGeometryUtils.Extensions
 
             return curveLoopCurves;
         }
+        
+    
     }
 }

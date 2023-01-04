@@ -19,6 +19,7 @@ namespace RevitGeometryUtils
             typeof(RuledFace)
         };
 
+        /*
         public static DirectShape CreateGenericDirectShape(GeometryObject geometryObject)
         {
             if (AcceptedTypesOfFaces.Contains(geometryObject.GetType()))
@@ -44,6 +45,6 @@ namespace RevitGeometryUtils
 
             return genericDirectShape;
         }
-        
+        */
     }
 }

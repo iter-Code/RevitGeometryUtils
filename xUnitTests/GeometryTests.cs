@@ -58,7 +58,7 @@ namespace xUnitTests
                     //Assert.Equal(round0Digits.X, new XYZ(38, 11, 15).X);
                     //Assert.Equal(round0Digits.Y, new XYZ(38, 11, 15).Y);
                     //Assert.Equal(round0Digits.Z, new XYZ(38, 11, 15).Z);
-
+                    /*
                     XYZ round0Digits = iCGeometry.RoundPointCoordinates(newPoint, 0);
                     XYZ round1Digits = iCGeometry.RoundPointCoordinates(newPoint, 1);
                     XYZ round3Digits = iCGeometry.RoundPointCoordinates(newPoint, 3);
@@ -88,7 +88,7 @@ namespace xUnitTests
                     //Assert.True(round11Digits.Equals(new XYZ(37.70191097706, 11.24292661588, 15.32154374755)));
                     //Assert.True(round12Digits.Equals(new XYZ(37.701910977063, 11.242926615878, 15.321543747546)));
                     //Assert.True(round13Digits.Equals(new XYZ(37.7019109770625, 11.2429266158782, 15.3215437475464)));
-
+                    */
                     transaction.RollBack();
                 }
             }, doc).Wait();

@@ -1,10 +1,11 @@
-﻿using Autodesk.Revit.DB;
+﻿    using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static RevitGeometryUtils.Extensions.PlaneExtensions;
 
 namespace RevitGeometryUtils.Extensions
 {
@@ -109,14 +110,22 @@ namespace RevitGeometryUtils.Extensions
 
             return scaledSolid;
         }
+        public static List<PlanarFace> GetZNormalFaces(this Solid solid)
+        {
+            List<PlanarFace> faceList = solid.GetPlanarFacesAsList();
+            List<PlanarFace> zNormalFaces = faceList
+                .Where(x => x.IsAlmostParallelToGlobalPlane(GlobalPlane.XYPlane))
+                .ToList();
+
+            return zNormalFaces;
+        }
 
 
 
 
 
-
-
-        public static Solid GetSolidFromGeometry(GeometryElement geometry)
+        /*
+        public static Solid GetSolidFromGeometry(this Solid solid1, GeometryElement geometry)
         {
             if (geometry.OfType<Solid>().ToList().Count > 1)
             {
@@ -130,6 +139,7 @@ namespace RevitGeometryUtils.Extensions
 
             return solid;
         }
+        
         public static Solid CreateExtrudedSolidFromPlanarFace(PlanarFace face)
         {
             IList<CurveLoop> planeCurveLoop = face.GetEdgesAsCurveLoops();
@@ -163,13 +173,7 @@ namespace RevitGeometryUtils.Extensions
 
             return zNormalFaces;
         }
-        public static List<PlanarFace> PickZNormalFacesFromSolid(Solid solid)
-        {
-            List<PlanarFace> faceList = TransformFaceArrayIntoList(solid);
-            List<PlanarFace> zNormalFaces = GetFacesParallelToGlobalPlane(faceList, GlobalPlane.XYPlane);
-
-            return zNormalFaces;
-        }
+        
         public static Solid RemakeExtrudedSolidOnZWithoutSmallLines(Solid solid)
         {
             List<PlanarFace> faceList = TransformFaceArrayIntoList(solid);
@@ -263,6 +267,6 @@ namespace RevitGeometryUtils.Extensions
             Solid translatedSolid = TranslateSolidByVector(solid, solidTranslationVector);
 
             return translatedSolid;
-        }
+        }*/
     }
 }

@@ -24,11 +24,11 @@ namespace RevitGeometryUtils.Extensions
         {
             XYZ originalStartPoint = line.GetEndPoint(0);
             XYZ originalEndPoint = line.GetEndPoint(1);
-            XYZ newStartPoint = originalStartPoint.ProjectOnGlobalPlane(globalPlane);
-            XYZ newEndPoint = originalEndPoint.ProjectOnGlobalPlane(globalPlane);
-            Line newLine = Line.CreateBound(newStartPoint, newEndPoint);
+            XYZ projectedStartPoint = originalStartPoint.ProjectOnGlobalPlane(globalPlane);
+            XYZ projectedEndPoint = originalEndPoint.ProjectOnGlobalPlane(globalPlane);
+            Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
 
-            return newLine;
+            return projectedLine;
         }
 
         /// <summary>
@@ -50,51 +50,106 @@ namespace RevitGeometryUtils.Extensions
             return newLine;
         }
 
-
+        /// <summary>
+        /// Projects this line onto the same plane as a given planar face.
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="planarFace"></param>
+        /// <returns>
+        /// The projected line.
+        /// </returns>
         public static Line ProjectOnSamePlaneAsPlanarFace(this Line line, PlanarFace planarFace)
         {
             XYZ originalStartPoint = line.GetEndPoint(0);
             XYZ originalEndPoint = line.GetEndPoint(1);
-            XYZ newStartPoint = originalStartPoint.ProjectOnSamePlaneAsPlanarFace(planarFace);
-            XYZ newEndPoint = originalEndPoint.ProjectOnSamePlaneAsPlanarFace(planarFace);
-            Line newLine = Line.CreateBound(newStartPoint, newEndPoint);
+            XYZ projectedStartPoint = originalStartPoint.ProjectOnSamePlaneAsPlanarFace(planarFace);
+            XYZ projectedEndPoint = originalEndPoint.ProjectOnSamePlaneAsPlanarFace(planarFace);
+            Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
 
-            return newLine;
+            return projectedLine;
         }
+
+        /// <summary>
+        /// Projects this line onto the same plane as a given planar face rounding its start and end coordinates.
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="planarFace"></param>
+        /// <returns>
+        /// The projected line with the start and end coordinates rounded.
+        /// </returns>
         public static Line ProjectOnSamePlaneAsPlanarFace(this Line line, PlanarFace planarFace, int digitsToRoundCoordinates)
         {
             XYZ originalStartPoint = line.GetEndPoint(0);
             XYZ originalEndPoint = line.GetEndPoint(1);
-            XYZ newStartPoint = originalStartPoint.ProjectOnSamePlaneAsPlanarFace(planarFace, digitsToRoundCoordinates);
-            XYZ newEndPoint = originalEndPoint.ProjectOnSamePlaneAsPlanarFace(planarFace, digitsToRoundCoordinates);
-            Line newLine = Line.CreateBound(newStartPoint, newEndPoint);
+            XYZ projectedStartPoint = originalStartPoint.ProjectOnSamePlaneAsPlanarFace(planarFace, digitsToRoundCoordinates);
+            XYZ projectedEndPoint = originalEndPoint.ProjectOnSamePlaneAsPlanarFace(planarFace, digitsToRoundCoordinates);
+            Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
 
-            return newLine;
+            return projectedLine;
         }
+        
+        /// <summary>
+        /// Projects this line onto a plane given the plane origin and the plane normal.
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="planarFace"></param>
+        /// <returns>
+        /// The projected line.
+        /// </returns>
         public static Line ProjectLineOnPlaneByOriginAndNormal(this Line line, XYZ origin, XYZ normal)
         {
             XYZ originalStartPoint = line.GetEndPoint(0);
             XYZ originalEndPoint = line.GetEndPoint(1);
-            XYZ newStartPoint = originalStartPoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal);
-            XYZ newEndPoint = originalEndPoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal);
-            Line newLine = Line.CreateBound(newStartPoint, newEndPoint);
+            XYZ projectedStartPoint = originalStartPoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal);
+            XYZ projectedEndPoint = originalEndPoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal);
+            Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
 
-            return newLine;
+            return projectedLine;
         }
+
+        /// <summary>
+        /// Projects this line onto a plane given the plane origin and the plane normal, rounding the line start and end coordinates.
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="planarFace"></param>
+        /// <returns>
+        /// The projected line with the start and end coordinates rounded.
+        /// </returns>
         public static Line ProjectLineOnPlaneByOriginAndNormal(this Line line, XYZ origin, XYZ normal, int digitsToRoundCoordinates)
         {
             XYZ originalStartPoint = line.GetEndPoint(0);
             XYZ originalEndPoint = line.GetEndPoint(1);
-            XYZ newStartPoint = originalStartPoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal, digitsToRoundCoordinates);
-            XYZ newEndPoint = originalEndPoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal, digitsToRoundCoordinates);
-            Line newLine = Line.CreateBound(newStartPoint, newEndPoint);
+            XYZ projectedStartPoint = originalStartPoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal, digitsToRoundCoordinates);
+            XYZ projectedEndPoint = originalEndPoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal, digitsToRoundCoordinates);
+            Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
 
-            return newLine;
+            return projectedLine;
         }
-        public static bool IsAlmostParallelTo(this Line firstLine, Line secondLine, double tolerance = 0.001)
+
+        /// <summary>
+        /// Verifies wheter this line is parallel to another given a tolerance.
+        /// </summary>
+        /// <param name="firstLine"></param>
+        /// <param name="secondLine"></param>
+        /// <param name="tolerance"></param>
+        /// <returns>
+        /// The boolean value that indicates if this vector is almost parallel to another.
+        /// </returns>
+        /// <remarks>
+        /// The standard Revit angle tolerance value is approximately 0.00174532925199433 radians.
+        /// </remarks>
+        public static bool IsAlmostParallelTo(this Line firstLine, Line secondLine, double tolerance = 0.00174532925199433)
         {
             return firstLine.Direction.IsAlmostParallelTo(secondLine.Direction);
         }
+
+        /// <summary>
+        /// Gets the angle between this line and the three global axis.
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns>
+        /// The value in radians of the angle in the format [X, Y, Z].
+        /// </returns>
         public static double[] GetAnglesToGlobalAxes(this Line line)
         {
             XYZ lineVector = line.Direction;
@@ -106,11 +161,33 @@ namespace RevitGeometryUtils.Extensions
 
             return anglesToGlobalAxes;
         }
+
+        /// <summary>
+        /// Checks if this line is slightly off a global axis.
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns>
+        /// The boolean value that indicates if this line is slightly off a global axis.
+        /// </returns>
+        /// <remarks>
+        /// The standard Revit angle tolerance value is approximately 0.00174532925199433 radians.  //TODO: VER QUANTO É A TOLERÂNCIA
+        /// </remarks>
         public static bool IsSlightlyOffAxis(this Line line)
         {
             double[] anglesToGlobalAxes = GetAnglesToGlobalAxes(line);
             return anglesToGlobalAxes.Any(x => x > AngleTolerance && x <= AngleTolerance * 2);
         }
+
+        /// <summary>
+        /// Extends this line to a direction going from the start to the end of the line if the CurveStart is chosen
+        /// and from the end to the start of the line if the CurveEnd is chosen.
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="value"></param>
+        /// <param name="curveEnd"></param>
+        /// <returns>
+        /// The extended curve.
+        /// </returns>
         public static Line ExtendByEndAndValue(this Line line, double value, CurveExtensions.CurveEnd curveEnd)
         {
             int endToExtend = 1;
@@ -130,6 +207,7 @@ namespace RevitGeometryUtils.Extensions
 
             return extendedLine;
         }
+        
         public static Line ExtendByVector(this Line line, XYZ vector)
         {
             int endToExtend = 1;
@@ -175,18 +253,7 @@ namespace RevitGeometryUtils.Extensions
         }
         public static Line ReconstructWithNewPoint(this Line line, XYZ newPoint, CurveExtensions.CurveEnd endToChange)
         {
-            XYZ newStart = line.GetEndPoint(0);
-            XYZ newEnd = newPoint;
-
-            if (endToChange == CurveEnd.Start)
-            {
-                newStart = newPoint;
-                newEnd = line.GetEndPoint(1);
-            }
-
-            Line newLine = Line.CreateBound(newStart, newEnd);
-
-            return newLine;
+            return endToChange == CurveExtensions.CurveEnd.Start ? Line.CreateBound(newPoint, line.GetEndPoint(1)) : Line.CreateBound(line.GetEndPoint(0), newPoint);
         }
         public static Line ReconstructIfSlightlyOffAxis(this Line line, CurveExtensions.CurveEnd endToChange)
         {
@@ -241,7 +308,7 @@ namespace RevitGeometryUtils.Extensions
 
 
 
-
+        /*
         public static List<XYZ> GetSequentialVerticesFromSequentialLines(List<Curve> sequentialCurves)
         {
             List<XYZ> vertices = sequentialCurves
@@ -352,6 +419,6 @@ namespace RevitGeometryUtils.Extensions
 
             return sequentialLines;
         }
-        
+        */
     }
 }

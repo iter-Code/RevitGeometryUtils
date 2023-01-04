@@ -11,6 +11,7 @@ using Autodesk.Revit.ApplicationServices;
 
 namespace RevitGeometryUtils
 {
+    /*
     public static class DocInfo
     {
         // CAMPOS ====================
@@ -413,7 +414,7 @@ namespace RevitGeometryUtils
 
         //    foreach (CurveLoop curveLoop in curveLoops)
         //    {
-        //        CurveLoop newCurveLoop = CorrectCurvesThatDontConnectInCurveLoop(curveLoop);
+        //        CurveLoop newCurveLoop = CorrectUnconnectedSequentialCurves(curveLoop);
         //        newCurveLoops.Add(newCurveLoop);
         //    }
 
@@ -421,7 +422,7 @@ namespace RevitGeometryUtils
         //}
         public static List<Curve> CorrectCurvesThatDontConnectInCurveLoopSequentialCurves(List<Curve> curveLoopCurves)
         {
-            List<int[]> curvesThatDontConnectIndexes = GetIndexesOfCurvesThatDontConnectInListOfCurves(curveLoopCurves);
+            List<int[]> curvesThatDontConnectIndexes = GetUnconnectedCurveIndicePairs(curveLoopCurves);
 
             foreach (int[] pairOfIndexes in curvesThatDontConnectIndexes)
             {
@@ -838,7 +839,7 @@ namespace RevitGeometryUtils
 
             return newListOfCurves;
         }
-        private static List<int[]> GetIndexesOfCurvesThatDontConnectInListOfCurves(List<Curve> curveLoopCurves)
+        private static List<int[]> GetUnconnectedCurveIndicePairs(List<Curve> curveLoopCurves)
         {
             int curveLoopLastIndex = curveLoopCurves.Count - 1;
             List<int[]> curvesIndexesThatDontConnectInCurveLoop = new List<int[]>();
@@ -885,7 +886,7 @@ namespace RevitGeometryUtils
         public static CurveLoop CorrectCurvesThatDontConnectInCurveLoop(CurveLoop curveLoop)
         {
             List<Curve> curveLoopCurves = GetSequentialCurvesFromCurveLoop(curveLoop);
-            List<int[]> curvesThatDontConnectIndexes = GetIndexesOfCurvesThatDontConnectInListOfCurves(curveLoopCurves);
+            List<int[]> curvesThatDontConnectIndexes = GetUnconnectedCurveIndicePairs(curveLoopCurves);
 
             foreach (int[] pairOfIndexes in curvesThatDontConnectIndexes)
             {
@@ -1436,7 +1437,7 @@ namespace RevitGeometryUtils
         {
             throw new NotImplementedException();
         }
-        */
+        
 
         //Plane
         public enum GlobalPlane
@@ -1962,8 +1963,8 @@ namespace RevitGeometryUtils
 
 
     }
-
-
+    
+    */
 }
 
     

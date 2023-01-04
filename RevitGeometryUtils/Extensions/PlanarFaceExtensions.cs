@@ -4,11 +4,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static RevitGeometryUtils.Extensions.PlaneExtensions;
 
 namespace RevitGeometryUtils.Extensions
 {
     public static class PlanarFaceExtensions
     {
+        //PlanarFace
+        public static bool IsAlmostParallelToGlobalPlane(this PlanarFace planarFace, GlobalPlane globalPlane)
+        {
+            XYZ globalPlaneNormal = GetGlobalPlaneNormal(globalPlane);
+            return planarFace.FaceNormal.IsAlmostParallelTo(globalPlaneNormal);
+        }
+        public static bool IsParallelToGlobalPlane(this PlanarFace planarFace, GlobalPlane globalPlane)
+        {
+            XYZ globalPlaneNormal = GetGlobalPlaneNormal(globalPlane);
+            return planarFace.FaceNormal.IsAlmostParallelTo(globalPlaneNormal, tolerance:0);
+        }
+
+
+        /*
         //TODO:verificar se GetLineCurveLoopsFromFace é mais estável que o .GetEdgesAsCurveLoops() do revit
         public static List<CurveLoop> GetLineCurveLoopsFromFace(PlanarFace planarFace, double smallLinesTolerance)
         {
@@ -275,6 +290,6 @@ namespace RevitGeometryUtils.Extensions
                                 .First();
 
             return lowestZNormalFace;
-        }
+        }*/
     }
 }

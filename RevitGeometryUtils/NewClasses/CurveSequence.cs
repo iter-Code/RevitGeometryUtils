@@ -12,8 +12,8 @@ namespace RevitGeometryUtils.NewClasses
     public class CurveSequence
     {
         //PROPERTIES
-        public List<Curve> SequentialCurves { get; set; }
-        public int LastIndex { get; set; }
+        private List<Curve> SequentialCurves { get; set; }
+        private int LastIndex { get; set; }
         public CurveSequenceType Type { get; set; }
 
         //ENUMERATORS
@@ -60,7 +60,14 @@ namespace RevitGeometryUtils.NewClasses
 
 
 
+        public List<XYZ> GetSequentialVertices()
+        {
+            List<XYZ> sequentialVertices = this.SequentialCurves
+                .Select(x => x.GetEndPoint(0))
+                .ToList();
 
+            return sequentialVertices;
+        }
 
 
 

@@ -1,4 +1,5 @@
 ﻿using Autodesk.Revit.DB;
+using RevitGeometryUtils.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,9 @@ namespace RevitGeometryUtils
             typeof(RevolvedFace), 
             typeof(RuledFace)
         };
-
-        /*
-        public static DirectShape CreateGenericDirectShape(GeometryObject geometryObject)
+        
+        
+        public static DirectShape CreateGenericDirectShape(GeometryObject geometryObject, Document document)
         {
             if (AcceptedTypesOfFaces.Contains(geometryObject.GetType()))
             {
@@ -28,7 +29,7 @@ namespace RevitGeometryUtils
                 geometryObject = faceObject.Triangulate();
             }
 
-            DirectShape genericDirectShape = DirectShape.CreateElement(DocInfo.Doc, new ElementId(BuiltInCategory.OST_GenericModel));
+            DirectShape genericDirectShape = DirectShape.CreateElement(document, new ElementId(BuiltInCategory.OST_GenericModel));
             try
             {
                 genericDirectShape.SetShape(new GeometryObject[] { geometryObject });
@@ -36,15 +37,14 @@ namespace RevitGeometryUtils
             catch (Exception)
             {
                 Solid newGeometryObject = geometryObject as Solid;
-                List<PlanarFace> solidFaces = iCGeometry.TransformFaceArrayIntoList(newGeometryObject);
+                List<PlanarFace> solidFaces = newGeometryObject.GetPlanarFacesAsList();
                 Mesh[] triangulatedFaces = solidFaces.Select(x => x.Triangulate()).ToArray();
 
                 genericDirectShape.SetShape(triangulatedFaces);
             }
-            
 
             return genericDirectShape;
         }
-        */
+        
     }
 }

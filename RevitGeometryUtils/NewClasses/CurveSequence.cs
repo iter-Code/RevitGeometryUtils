@@ -16,12 +16,14 @@ namespace RevitGeometryUtils.NewClasses
         private int LastIndex { get; set; }
         public CurveSequenceType Type { get; set; }
 
+
         //ENUMERATORS
         public enum CurveSequenceType
         {
             Open,
             Closed
         }
+
 
         //CONSTRUCTORS
         public CurveSequence(CurveLoop curveLoop)
@@ -35,7 +37,7 @@ namespace RevitGeometryUtils.NewClasses
         //METHODS
         private List<Curve> GetValidCurves(CurveLoop curveLoop)
         {
-            //curveLoop.ToArray();
+            //curveLoop.ToArray(); //TODO: verificar se a sequência retornada desse jeito é sempre ordenada de maneira correta
             List<Curve> sequentialCurves = new List<Curve>();
             CurveLoopIterator curveLoopIterator = curveLoop.GetCurveLoopIterator();
             curveLoopIterator.Reset();

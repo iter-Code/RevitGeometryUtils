@@ -28,6 +28,8 @@ namespace RevitGeometryUtils.Extensions
             XYZ projectedEndPoint = originalEndPoint.ProjectOnGlobalPlane(globalPlane);
             Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
 
+            //TODO: Tratar caso a linha não possa ser criada (se a projeção for muito pequena ou se a linha for ortogonal ao plano)
+
             return projectedLine;
         }
 
@@ -46,6 +48,8 @@ namespace RevitGeometryUtils.Extensions
             XYZ newStartPoint = originalStartPoint.ProjectOnGlobalPlane(globalPlane, digitsToRoundCoordinates);
             XYZ newEndPoint = originalEndPoint.ProjectOnGlobalPlane(globalPlane, digitsToRoundCoordinates);
             Line newLine = Line.CreateBound(newStartPoint, newEndPoint);
+
+            //TODO: Tratar caso a linha não possa ser criada (se a projeção for muito pequena ou se a linha for ortogonal ao plano)
 
             return newLine;
         }
@@ -66,6 +70,8 @@ namespace RevitGeometryUtils.Extensions
             XYZ projectedEndPoint = originalEndPoint.ProjectOnSamePlaneAsPlanarFace(planarFace);
             Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
 
+            //TODO: Tratar caso a linha não possa ser criada (se a projeção for muito pequena ou se a linha for ortogonal ao plano)
+
             return projectedLine;
         }
 
@@ -84,6 +90,8 @@ namespace RevitGeometryUtils.Extensions
             XYZ projectedStartPoint = originalStartPoint.ProjectOnSamePlaneAsPlanarFace(planarFace, digitsToRoundCoordinates);
             XYZ projectedEndPoint = originalEndPoint.ProjectOnSamePlaneAsPlanarFace(planarFace, digitsToRoundCoordinates);
             Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
+
+            //TODO: Tratar caso a linha não possa ser criada (se a projeção for muito pequena ou se a linha for ortogonal ao plano)
 
             return projectedLine;
         }
@@ -104,6 +112,8 @@ namespace RevitGeometryUtils.Extensions
             XYZ projectedEndPoint = originalEndPoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal);
             Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
 
+            //TODO: Tratar caso a linha não possa ser criada (se a projeção for muito pequena ou se a linha for ortogonal ao plano)
+
             return projectedLine;
         }
 
@@ -122,6 +132,8 @@ namespace RevitGeometryUtils.Extensions
             XYZ projectedStartPoint = originalStartPoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal, digitsToRoundCoordinates);
             XYZ projectedEndPoint = originalEndPoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal, digitsToRoundCoordinates);
             Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
+
+            //TODO: Tratar caso a linha não possa ser criada (se a projeção for muito pequena ou se a linha for ortogonal ao plano)
 
             return projectedLine;
         }

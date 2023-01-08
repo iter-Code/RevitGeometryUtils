@@ -119,7 +119,16 @@ namespace RevitGeometryUtils.Extensions
 
             return zNormalFaces;
         }
+        public static List<PlanarFace> GetFacesParallelToGlobalPlane(this Solid solid, GlobalPlane globalPlane)
+        {
+            List<PlanarFace> faceList = solid.GetPlanarFacesAsList();
+            XYZ globalPlaneNormal = GetGlobalPlaneNormal(globalPlane);
+            List<PlanarFace> globalPlaneOrthogonalFaces = faceList
+                    .Where(x => x.FaceNormal.IsAlmostParallelTo(globalPlaneNormal))
+                    .ToList();
 
+            return globalPlaneOrthogonalFaces;
+        }
 
 
 

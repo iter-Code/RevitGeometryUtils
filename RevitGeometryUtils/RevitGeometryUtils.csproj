@@ -61,7 +61,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DirectShapeCreator.cs" />
     <Compile Include="DynamoLineOutput.cs" />
-    <Compile Include="iCGeometry.cs" />
     <Compile Include="Extensions\XYZExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

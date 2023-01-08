@@ -50,8 +50,6 @@ namespace RevitGeometryUtils.Extensions
             return translatedCurve;
         }
 
-
-        /*
         /// <summary>
         /// Projects this curve onto a global plane.
         /// </summary>
@@ -79,22 +77,24 @@ namespace RevitGeometryUtils.Extensions
                     break;
 
                 case "Ellipse":
-                    Line line = curve as Line;
                     zPlanifiedCurve = (curve as Ellipse).ProjectOnGlobalPlane(globalPlane);
                     break;
 
                 default:
                     //TODO: tratar outras curvas e projetar em outros planos
                     XYZ originalStartPoint = curve.GetEndPoint(0);
-                    Transform transform = GetProjectionOnZBasisPlaneTransform(originalStartPoint);
-                    zPlanifiedCurve = curve.CreateTransformed(transform);
+
+                    XYZ pointProjectedOnBasisZPlane = new XYZ(originalStartPoint.X, originalStartPoint.Y, 0);
+                    XYZ projectionVector = pointProjectedOnBasisZPlane - originalStartPoint;
+                    Transform objectTranslation = Transform.CreateTranslation(projectionVector);
+                    zPlanifiedCurve = curve.CreateTransformed(objectTranslation);
                     break;
             }
 
             return zPlanifiedCurve;
         }
-   
-        
+
+
         public static List<Curve> ProjectMultipleCurvesOnGlobalPlane(List<Curve> curves, PlaneExtensions.GlobalPlane globalPlane)
         {
             List<Curve> projectedCurves = new List<Curve>();
@@ -103,9 +103,10 @@ namespace RevitGeometryUtils.Extensions
             {
                 try
                 {
-                    Curve projectedCurve = ProjectCurveOnGlobalPlane(curve, globalPlane);
+                    Curve projectedCurve = curve.ProjectOnGlobalPlane(globalPlane);
                     projectedCurves.Add(projectedCurve);
                 }
+                //TODO: IMPLEMENTAR DIREITO
                 catch (Autodesk.Revit.Exceptions.ArgumentsInconsistentException)
                 {
                     throw;
@@ -115,6 +116,9 @@ namespace RevitGeometryUtils.Extensions
 
             return projectedCurves;
         }
+
+        /*
+        
         public static List<Curve> PurgeSequentialCurvesSmallLinesAndTrimAdjacent(List<Curve> curveLoopCurves)
         {
             int curveLoopLastIndex = curveLoopCurves.Count - 1;

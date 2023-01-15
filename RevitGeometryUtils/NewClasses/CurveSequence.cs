@@ -12,7 +12,7 @@ namespace RevitGeometryUtils.NewClasses
     public class CurveSequence
     {
         //PROPERTIES
-        private List<Curve> SequentialCurves { get; set; }
+        public List<Curve> SequentialCurves { get; set; }
         private int LastIndex { get; set; }
         public CurveSequenceType Type { get; set; }
 

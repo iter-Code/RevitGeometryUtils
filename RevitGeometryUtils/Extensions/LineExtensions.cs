@@ -10,7 +10,10 @@ namespace RevitGeometryUtils.Extensions
 {
     public static class LineExtensions
     {
-        public static double AngleTolerance = 0.00174532925199433;
+        //Revit standard Vertex Tolerance
+        public const double VertexTolerance = 0.0005233832795;
+        //Revit standard Angle Tolerance
+        public const double AngleTolerance = 0.00174532925199433;
 
         /// <summary>
         /// Projects this line onto a global plane.
@@ -219,7 +222,23 @@ namespace RevitGeometryUtils.Extensions
 
             return extendedLine;
         }
-        
+
+        public static bool IsGeometricallyAlmostEqualTo(this Line line, Line otherLine, bool ignoreDirection=false, double tolerance=VertexTolerance)
+        {
+            bool isStartPointEqual = line.GetEndPoint(0).IsAlmostEqualTo(otherLine.GetEndPoint(0), tolerance);
+            bool isEndPointEqual = line.GetEndPoint(1).IsAlmostEqualTo(otherLine.GetEndPoint(1), tolerance);
+            bool areCoordinatesEqual = isStartPointEqual && isEndPointEqual;
+            
+            if (ignoreDirection && !areCoordinatesEqual)
+            {
+                bool isStartPointReversedEqual = line.GetEndPoint(0).IsAlmostEqualTo(otherLine.GetEndPoint(1), tolerance);
+                bool isEndPointReversedEqual = line.GetEndPoint(1).IsAlmostEqualTo(otherLine.GetEndPoint(0), tolerance);
+                areCoordinatesEqual = isStartPointReversedEqual && isEndPointReversedEqual;
+            }
+
+            return areCoordinatesEqual;
+        }
+
         public static Line ExtendByVector(this Line line, XYZ vector)
         {
             int endToExtend = 1;

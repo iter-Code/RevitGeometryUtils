@@ -4,60 +4,60 @@ A library that adds new geometry funcionalities to the Revit API.
 # Methods added to existing classes:
 ## XYZ
 ### Point methods:
-IsNumericallyEqualTo
-RoundCoordinates
-ProjectOnGlobalPlane
-ProjectOnPlaneByPlaneOriginAndNormal
-ProjectOnSamePlaneAsPlanarFace
+* IsNumericallyEqualTo
+* RoundCoordinates
+* ProjectOnGlobalPlane
+* ProjectOnPlaneByPlaneOriginAndNormal
+* ProjectOnSamePlaneAsPlanarFace
 
 ### Vector methods:
-IsAlmostParallelTo
+* IsAlmostParallelTo
 
 ## Line
-ProjectOnGlobalPlane
-ProjectOnSamePlaneAsPlanarFace
-ProjectLineOnPlaneByOriginAndNormal
-IsAlmostParallelTo
-GetAnglesToGlobalAxes
-IsSlightlyOffAxis
-ExtendByEndAndValue
-IsGeometricallyAlmostEqualTo
-ExtendByVector
-ExtendLineByPointAndValue
-ReconstructWithNewPoint
+* ProjectOnGlobalPlane
+* ProjectOnSamePlaneAsPlanarFace
+* ProjectLineOnPlaneByOriginAndNormal
+* IsAlmostParallelTo
+* GetAnglesToGlobalAxes
+* IsSlightlyOffAxis
+* ExtendByEndAndValue
+* IsGeometricallyAlmostEqualTo
+* ExtendByVector
+* ExtendLineByPointAndValue
+* ReconstructWithNewPoint
 
 ## Arc
-ProjectOnGlobalPlane
-ProjectOnSamePlaneAsPlanarFace
-ProjectOnPlaneByOriginAndNormal
+* ProjectOnGlobalPlane
+* ProjectOnSamePlaneAsPlanarFace
+* ProjectOnPlaneByOriginAndNormal
 
 ## Ellipse
-ProjectOnGlobalPlane
+* ProjectOnGlobalPlane
 
 ## Curve
-IsBelowLengthTolerance
-TranslateByVector
-ProjectOnGlobalPlane
+* IsBelowLengthTolerance
+* TranslateByVector
+* ProjectOnGlobalPlane
 
 ## CurveLoop
 
 ## Plane
-GetGlobalPlaneNormal
+* GetGlobalPlaneNormal
 
 ## PlanarFace
-IsAlmostParallelToGlobalPlane
-IsParallelToGlobalPlane
+* IsAlmostParallelToGlobalPlane
+* IsParallelToGlobalPlane
 
 ## Solid
-GetPlanarFacesAsList
-TranslateByVector
-GetVectorBetweenOriginAndCentroid
-GetSolidOutwardFaceDirections
-GetSolidOutwardFaceDirection
-IsPointInsideSolid
-ScaleByValue
-GetZNormalFaces
-GetFacesParallelToGlobalPlane
+* GetPlanarFacesAsList
+* TranslateByVector
+* GetVectorBetweenOriginAndCentroid
+* GetSolidOutwardFaceDirections
+* GetSolidOutwardFaceDirection
+* IsPointInsideSolid
+* ScaleByValue
+* GetZNormalFaces
+* GetFacesParallelToGlobalPlane
 
 
 # New classes that are useful with existing Revit API geometry:

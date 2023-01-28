@@ -23,16 +23,23 @@ namespace RevitGeometryUtils.Extensions
             XYZ originalXDirection = ellipse.XDirection;
             XYZ originalYDirection = ellipse.YDirection;
 
-            XYZ newCenter = originalCenter.ProjectOnGlobalPlane(globalPlane);
-            XYZ newXDirection = originalXDirection.ProjectOnGlobalPlane(globalPlane);
-            XYZ newYDirection = originalYDirection.ProjectOnGlobalPlane(globalPlane);
-            double newXRadius = newXDirection.DistanceTo(newCenter);
-            double newYRadius = newYDirection.DistanceTo(newCenter);
+            XYZ projectedCenter = originalCenter.ProjectOnGlobalPlane(globalPlane);
+            XYZ projectedXDirection = originalXDirection.ProjectOnGlobalPlane(globalPlane);
+            XYZ projectedYDirection = originalYDirection.ProjectOnGlobalPlane(globalPlane);
+            double projectedXRadius = projectedXDirection.DistanceTo(projectedCenter);
+            double projectedYRadius = projectedYDirection.DistanceTo(projectedCenter);
             double normalizedStartParameter = ellipse.ComputeNormalizedParameter(ellipse.GetEndParameter(0));
             double normalizedEndParameter = ellipse.ComputeNormalizedParameter(ellipse.GetEndParameter(1));
-            Curve newEllipse = Ellipse.CreateCurve(newCenter, newXRadius, newYRadius, newXDirection, newYDirection, normalizedStartParameter, normalizedEndParameter);
-
-            return newEllipse as Ellipse;
+            
+            try
+            {
+                Curve projectedEllipse = Ellipse.CreateCurve(projectedCenter, projectedXRadius, projectedYRadius, projectedXDirection, projectedYDirection, normalizedStartParameter, normalizedEndParameter);
+                return projectedEllipse as Ellipse;
+            }
+            catch (Exception)
+            {
+                throw new NotImplementedException("The projection is a line or a curve too small to be created. This case is not yet implemented.");
+            }
         }
 
         /// <summary>
@@ -50,16 +57,23 @@ namespace RevitGeometryUtils.Extensions
             XYZ originalXDirection = ellipse.XDirection;
             XYZ originalYDirection = ellipse.YDirection;
 
-            XYZ newCenter = originalCenter.ProjectOnGlobalPlane(globalPlane, digitsToRoundCoordinates);
-            XYZ newXDirection = originalXDirection.ProjectOnGlobalPlane(globalPlane, digitsToRoundCoordinates);
-            XYZ newYDirection = originalYDirection.ProjectOnGlobalPlane(globalPlane, digitsToRoundCoordinates);
-            double newXRadius = newXDirection.DistanceTo(newCenter);
-            double newYRadius = newYDirection.DistanceTo(newCenter);
+            XYZ projectedCenter = originalCenter.ProjectOnGlobalPlane(globalPlane, digitsToRoundCoordinates);
+            XYZ projectedXDirection = originalXDirection.ProjectOnGlobalPlane(globalPlane, digitsToRoundCoordinates);
+            XYZ projectedYDirection = originalYDirection.ProjectOnGlobalPlane(globalPlane, digitsToRoundCoordinates);
+            double projectedXRadius = projectedXDirection.DistanceTo(projectedCenter);
+            double projectedYRadius = projectedYDirection.DistanceTo(projectedCenter);
             double normalizedStartParameter = ellipse.ComputeNormalizedParameter(ellipse.GetEndParameter(0));
             double normalizedEndParameter = ellipse.ComputeNormalizedParameter(ellipse.GetEndParameter(1));
-            Curve newEllipse = Ellipse.CreateCurve(newCenter, newXRadius, newYRadius, newXDirection, newYDirection, normalizedStartParameter, normalizedEndParameter);
-
-            return newEllipse as Ellipse;
+            
+            try
+            {
+                Curve projectedEllipse = Ellipse.CreateCurve(projectedCenter, projectedXRadius, projectedYRadius, projectedXDirection, projectedYDirection, normalizedStartParameter, normalizedEndParameter);
+                return projectedEllipse as Ellipse;
+            }
+            catch (Exception)
+            {
+                throw new NotImplementedException("The projection is a line or a curve too small to be created. This case is not yet implemented.");
+            }
         }
 
         /*

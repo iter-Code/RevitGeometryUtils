@@ -15,6 +15,8 @@ namespace RevitGeometryUtils.Extensions
         //Revit standard Angle Tolerance
         public const double AngleTolerance = 0.00174532925199433;
 
+        //TODO: deal with the cases when the line can't be projected (if the projection is a point or a line below Revit length tolerance)
+        
         /// <summary>
         /// Projects this line onto a global plane.
         /// </summary>
@@ -27,13 +29,19 @@ namespace RevitGeometryUtils.Extensions
         {
             XYZ originalStartPoint = line.GetEndPoint(0);
             XYZ originalEndPoint = line.GetEndPoint(1);
+            
             XYZ projectedStartPoint = originalStartPoint.ProjectOnGlobalPlane(globalPlane);
             XYZ projectedEndPoint = originalEndPoint.ProjectOnGlobalPlane(globalPlane);
-            Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
 
-            //TODO: Tratar caso a linha não possa ser criada (se a projeção for muito pequena ou se a linha for ortogonal ao plano)
-
-            return projectedLine;
+            try
+            {
+                Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
+                return projectedLine;
+            }
+            catch (Exception)
+            {
+                throw new NotImplementedException("The projection is a point or a line too small to be created. This case is not yet implemented.");
+            }
         }
 
         /// <summary>
@@ -48,13 +56,19 @@ namespace RevitGeometryUtils.Extensions
         {
             XYZ originalStartPoint = line.GetEndPoint(0);
             XYZ originalEndPoint = line.GetEndPoint(1);
-            XYZ newStartPoint = originalStartPoint.ProjectOnGlobalPlane(globalPlane, digitsToRoundCoordinates);
-            XYZ newEndPoint = originalEndPoint.ProjectOnGlobalPlane(globalPlane, digitsToRoundCoordinates);
-            Line newLine = Line.CreateBound(newStartPoint, newEndPoint);
+            
+            XYZ projectedStartPoint = originalStartPoint.ProjectOnGlobalPlane(globalPlane, digitsToRoundCoordinates);
+            XYZ projectedEndPoint = originalEndPoint.ProjectOnGlobalPlane(globalPlane, digitsToRoundCoordinates);
 
-            //TODO: Tratar caso a linha não possa ser criada (se a projeção for muito pequena ou se a linha for ortogonal ao plano)
-
-            return newLine;
+            try
+            {
+                Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
+                return projectedLine;
+            }
+            catch (Exception)
+            {
+                throw new NotImplementedException("The projection is a point or a line too small to be created. This case is not yet implemented.");
+            }
         }
 
         /// <summary>
@@ -69,13 +83,19 @@ namespace RevitGeometryUtils.Extensions
         {
             XYZ originalStartPoint = line.GetEndPoint(0);
             XYZ originalEndPoint = line.GetEndPoint(1);
+            
             XYZ projectedStartPoint = originalStartPoint.ProjectOnSamePlaneAsPlanarFace(planarFace);
             XYZ projectedEndPoint = originalEndPoint.ProjectOnSamePlaneAsPlanarFace(planarFace);
-            Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
-
-            //TODO: Tratar caso a linha não possa ser criada (se a projeção for muito pequena ou se a linha for ortogonal ao plano)
-
-            return projectedLine;
+            
+            try
+            {
+                Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
+                return projectedLine;
+            }
+            catch (Exception)
+            {
+                throw new NotImplementedException("The projection is a point or a line too small to be created. This case is not yet implemented.");
+            }
         }
 
         /// <summary>
@@ -90,13 +110,19 @@ namespace RevitGeometryUtils.Extensions
         {
             XYZ originalStartPoint = line.GetEndPoint(0);
             XYZ originalEndPoint = line.GetEndPoint(1);
+            
             XYZ projectedStartPoint = originalStartPoint.ProjectOnSamePlaneAsPlanarFace(planarFace, digitsToRoundCoordinates);
             XYZ projectedEndPoint = originalEndPoint.ProjectOnSamePlaneAsPlanarFace(planarFace, digitsToRoundCoordinates);
-            Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
-
-            //TODO: Tratar caso a linha não possa ser criada (se a projeção for muito pequena ou se a linha for ortogonal ao plano)
-
-            return projectedLine;
+            
+            try
+            {
+                Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
+                return projectedLine;
+            }
+            catch (Exception)
+            {
+                throw new NotImplementedException("The projection is a point or a line too small to be created. This case is not yet implemented.");
+            }
         }
         
         /// <summary>
@@ -111,13 +137,19 @@ namespace RevitGeometryUtils.Extensions
         {
             XYZ originalStartPoint = line.GetEndPoint(0);
             XYZ originalEndPoint = line.GetEndPoint(1);
+            
             XYZ projectedStartPoint = originalStartPoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal);
             XYZ projectedEndPoint = originalEndPoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal);
-            Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
-
-            //TODO: Tratar caso a linha não possa ser criada (se a projeção for muito pequena ou se a linha for ortogonal ao plano)
-
-            return projectedLine;
+            
+            try
+            {
+                Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
+                return projectedLine;
+            }
+            catch (Exception)
+            {
+                throw new NotImplementedException("The projection is a point or a line too small to be created. This case is not yet implemented.");
+            }
         }
 
         /// <summary>
@@ -132,13 +164,19 @@ namespace RevitGeometryUtils.Extensions
         {
             XYZ originalStartPoint = line.GetEndPoint(0);
             XYZ originalEndPoint = line.GetEndPoint(1);
+            
             XYZ projectedStartPoint = originalStartPoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal, digitsToRoundCoordinates);
             XYZ projectedEndPoint = originalEndPoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal, digitsToRoundCoordinates);
-            Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
-
-            //TODO: Tratar caso a linha não possa ser criada (se a projeção for muito pequena ou se a linha for ortogonal ao plano)
-
-            return projectedLine;
+            
+            try
+            {
+                Line projectedLine = Line.CreateBound(projectedStartPoint, projectedEndPoint);
+                return projectedLine;
+            }
+            catch (Exception)
+            {
+                throw new NotImplementedException("The projection is a point or a line too small to be created. This case is not yet implemented.");
+            }
         }
 
         /// <summary>
@@ -165,7 +203,7 @@ namespace RevitGeometryUtils.Extensions
         /// <returns>
         /// The value in radians of the angle in the format [X, Y, Z].
         /// </returns>
-        public static double[] GetAnglesToGlobalAxes(this Line line)
+        public static double[] GetRadianAnglesToGlobalAxes(this Line line)
         {
             XYZ lineVector = line.Direction;
 
@@ -189,7 +227,7 @@ namespace RevitGeometryUtils.Extensions
         /// </remarks>
         public static bool IsSlightlyOffAxis(this Line line)
         {
-            double[] anglesToGlobalAxes = GetAnglesToGlobalAxes(line);
+            double[] anglesToGlobalAxes = GetRadianAnglesToGlobalAxes(line);
             return anglesToGlobalAxes.Any(x => x > AngleTolerance && x <= AngleTolerance * 2);
         }
 
@@ -223,6 +261,8 @@ namespace RevitGeometryUtils.Extensions
             return extendedLine;
         }
 
+
+        // TODO: Not yet documentend/curated functions
         public static bool IsGeometricallyAlmostEqualTo(this Line line, Line otherLine, bool ignoreDirection=false, double tolerance=VertexTolerance)
         {
             bool isStartPointEqual = line.GetEndPoint(0).IsAlmostEqualTo(otherLine.GetEndPoint(0), tolerance);

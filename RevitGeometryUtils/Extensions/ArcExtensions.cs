@@ -22,6 +22,7 @@ namespace RevitGeometryUtils.Extensions
             XYZ originalStartPoint = arc.GetEndPoint(0);
             XYZ originalEndPoint = arc.GetEndPoint(1);
             XYZ originalMiddlePoint = arc.Evaluate(0.5, true);
+            
             XYZ projectedStartPoint = originalStartPoint.ProjectOnGlobalPlane(globalPlane);
             XYZ projectedEndPoint = originalEndPoint.ProjectOnGlobalPlane(globalPlane);
             XYZ projectedMiddlePoint = originalMiddlePoint.ProjectOnGlobalPlane(globalPlane);
@@ -44,6 +45,7 @@ namespace RevitGeometryUtils.Extensions
             XYZ originalStartPoint = arc.GetEndPoint(0);
             XYZ originalEndPoint = arc.GetEndPoint(1);
             XYZ originalMiddlePoint = arc.Evaluate(0.5, true);
+            
             XYZ projectedStartPoint = originalStartPoint.ProjectOnGlobalPlane(globalPlane, digitsToRoundCoordinates);
             XYZ projectedEndPoint = originalEndPoint.ProjectOnGlobalPlane(globalPlane, digitsToRoundCoordinates);
             XYZ projectedMiddlePoint = originalMiddlePoint.ProjectOnGlobalPlane(globalPlane, digitsToRoundCoordinates);
@@ -65,6 +67,7 @@ namespace RevitGeometryUtils.Extensions
             XYZ originalStartPoint = arc.GetEndPoint(0);
             XYZ originalEndPoint = arc.GetEndPoint(1);
             XYZ originalMiddlePoint = arc.Evaluate(0.5, true);
+            
             XYZ projectedStartPoint = originalStartPoint.ProjectOnSamePlaneAsPlanarFace(planarFace);
             XYZ projectedEndPoint = originalEndPoint.ProjectOnSamePlaneAsPlanarFace(planarFace);
             XYZ projectedMiddlePoint = originalMiddlePoint.ProjectOnSamePlaneAsPlanarFace(planarFace);
@@ -87,6 +90,7 @@ namespace RevitGeometryUtils.Extensions
             XYZ originalStartPoint = arc.GetEndPoint(0);
             XYZ originalEndPoint = arc.GetEndPoint(1);
             XYZ originalMiddlePoint = arc.Evaluate(0.5, true);
+            
             XYZ projectedStartPoint = originalStartPoint.ProjectOnSamePlaneAsPlanarFace(planarFace, digitsToRoundCoordinates);
             XYZ projectedEndPoint = originalEndPoint.ProjectOnSamePlaneAsPlanarFace(planarFace, digitsToRoundCoordinates);
             XYZ projectedMiddlePoint = originalMiddlePoint.ProjectOnSamePlaneAsPlanarFace(planarFace, digitsToRoundCoordinates);
@@ -109,6 +113,7 @@ namespace RevitGeometryUtils.Extensions
             XYZ originalStartPoint = arc.GetEndPoint(0);
             XYZ originalEndPoint = arc.GetEndPoint(1);
             XYZ originalMiddlePoint = arc.Evaluate(0.5, true);
+            
             XYZ projectedStartPoint = originalStartPoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal);
             XYZ projectedEndPoint = originalEndPoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal);
             XYZ projectedMiddlePoint = originalMiddlePoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal);
@@ -132,6 +137,7 @@ namespace RevitGeometryUtils.Extensions
             XYZ originalStartPoint = arc.GetEndPoint(0);
             XYZ originalEndPoint = arc.GetEndPoint(1);
             XYZ originalMiddlePoint = arc.Evaluate(0.5, true);
+            
             XYZ projectedStartPoint = originalStartPoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal, digitsToRoundCoordinates);
             XYZ projectedEndPoint = originalEndPoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal, digitsToRoundCoordinates);
             XYZ projectedMiddlePoint = originalMiddlePoint.ProjectOnPlaneByPlaneOriginAndNormal(origin, normal, digitsToRoundCoordinates);

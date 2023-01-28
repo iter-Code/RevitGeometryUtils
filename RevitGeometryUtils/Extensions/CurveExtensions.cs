@@ -82,40 +82,19 @@ namespace RevitGeometryUtils.Extensions
 
                 default:
                     //TODO: tratar outras curvas e projetar em outros planos
+                    throw new NotImplementedException("This curve type is not supported yet.");
+                    /*
                     XYZ originalStartPoint = curve.GetEndPoint(0);
-
                     XYZ pointProjectedOnBasisZPlane = new XYZ(originalStartPoint.X, originalStartPoint.Y, 0);
                     XYZ projectionVector = pointProjectedOnBasisZPlane - originalStartPoint;
                     Transform objectTranslation = Transform.CreateTranslation(projectionVector);
                     zPlanifiedCurve = curve.CreateTransformed(objectTranslation);
-                    break;
+                    break;*/
             }
 
             return zPlanifiedCurve;
         }
 
-
-        public static List<Curve> ProjectMultipleCurvesOnGlobalPlane(List<Curve> curves, PlaneExtensions.GlobalPlane globalPlane)
-        {
-            List<Curve> projectedCurves = new List<Curve>();
-
-            foreach (Curve curve in curves)
-            {
-                try
-                {
-                    Curve projectedCurve = curve.ProjectOnGlobalPlane(globalPlane);
-                    projectedCurves.Add(projectedCurve);
-                }
-                //TODO: IMPLEMENTAR DIREITO
-                catch (Autodesk.Revit.Exceptions.ArgumentsInconsistentException)
-                {
-                    throw;
-                }
-
-            }
-
-            return projectedCurves;
-        }
 
         /*
         

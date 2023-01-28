@@ -172,7 +172,33 @@ namespace RevitGeometryUtils.Extensions
             return roundedProjectedPoint;
         }
 
+        
+        //Comparer
+        /// <summary>
+        /// Comparer class that filters out duplicate points in a LINQ query.
+        /// </summary>
+        /// <remarks>
+        /// The standard Revit value for vertex tolerance is approximately 0.0005233832795 feet.
+        /// </remarks>
+        public class XYZEqualityComparer : IEqualityComparer<XYZ>
+        {
+            private double _tolerance;
+            public XYZEqualityComparer(double _tolerance = VertexTolerance)
+            {
+                this._tolerance = _tolerance;
+            }
+            public bool Equals(XYZ firstVector, XYZ secondVector)
+            {
+                return firstVector.IsAlmostEqualTo(secondVector, _tolerance);
+            }
 
+            public int GetHashCode(XYZ point)
+            {
+                return point.GetHashCode();
+            }
+        }
+
+        
         //Vector
         /// <summary>
         /// Verifies wheter this vector is parallel to another given a tolerance.
@@ -189,98 +215,6 @@ namespace RevitGeometryUtils.Extensions
         public static bool IsAlmostParallelTo(this XYZ firstVector, XYZ secondVector, double tolerance = AngleTolerance)
         {
             return firstVector.IsAlmostEqualTo(secondVector, tolerance) || firstVector.IsAlmostEqualTo(secondVector.Negate(), tolerance) ? true : false;
-        }
-
-
-
-        //Funções que talvez seja bom deixar como métodos em vez de fazer uma extensão da classe
-        public static List<XYZ> RemovePointsAtIndexes(this List<XYZ> unfilteredPoints, List<int> indexesToRemove)
-        {
-            for (int i = indexesToRemove.Count - 1; i >= 0; i--)
-            {
-                int indexToRemove = indexesToRemove[i];
-                unfilteredPoints.RemoveAt(indexToRemove);
-            }
-
-            return unfilteredPoints;
-        }
-        public static List<XYZ> PruneNonSequentialDuplicatedPoints(List<XYZ> nonSequentialPoints)
-        {
-            List<int> indexesToRemove = new List<int>();
-
-            for (int i = 0; i < nonSequentialPoints.Count(); i++)
-            {
-                for (int j = i + 1; j < nonSequentialPoints.Count(); j++)
-                {
-                    if (nonSequentialPoints[i].IsNumericallyEqualTo(nonSequentialPoints[j]))
-                    {
-                        indexesToRemove.Add(j);
-                    }
-                }
-            }
-
-            List<XYZ> filteredNonSequentialPoints = nonSequentialPoints.RemovePointsAtIndexes(indexesToRemove);
-
-            return filteredNonSequentialPoints;
-        }
-        public static List<XYZ> PruneNonSequentialDuplicatedPoints(List<XYZ> nonSequentialPoints, double tolerance)
-        {
-            List<int> indexesToRemove = new List<int>();
-
-            for (int i = 0; i < nonSequentialPoints.Count(); i++)
-            {
-                for (int j = i + 1; j < nonSequentialPoints.Count(); j++)
-                {
-                    if (nonSequentialPoints[i].IsNumericallyEqualTo(nonSequentialPoints[j], tolerance))
-                    {
-                        indexesToRemove.Add(j);
-                    }
-                }
-            }
-
-            List<XYZ> filteredNonSequentialPoints = nonSequentialPoints.RemovePointsAtIndexes(indexesToRemove);
-
-            return filteredNonSequentialPoints;
-        }
-        public static List<XYZ> PruneSequentialDuplicatedPoints(List<XYZ> sequentialPoints)
-        {
-            List<int> indexesToRemove = new List<int>();
-
-            for (int i = 0; i < (sequentialPoints.Count - 1); i++)
-            {
-                if (sequentialPoints[i].IsNumericallyEqualTo(sequentialPoints[i + 1]))
-                {
-                    indexesToRemove.Add(i);
-                }
-            }
-
-            List<XYZ> filteredSequentialPoints = sequentialPoints.RemovePointsAtIndexes(indexesToRemove);
-
-            return filteredSequentialPoints;
-        }
-        public static List<XYZ> PruneSequentialDuplicatedPoints(List<XYZ> sequentialPoints, double tolerance)
-        {
-            List<int> indexesToRemove = new List<int>();
-
-            for (int i = 0; i < (sequentialPoints.Count - 1); i++)
-            {
-                if (sequentialPoints[i].IsNumericallyEqualTo(sequentialPoints[i + 1], tolerance))
-                {
-                    indexesToRemove.Add(i);
-                }
-            }
-
-            List<XYZ> filteredSequentialPoints = sequentialPoints.RemovePointsAtIndexes(indexesToRemove);
-
-            return filteredSequentialPoints;
-        }
-        public static List<XYZ> RoundMultiplePointCoordinates(List<XYZ> points, int digitsToRoundCoordinates)
-        {
-            List<XYZ> roundedPoints = points
-                .Select(x => x.RoundCoordinates(digitsToRoundCoordinates))
-                .ToList();
-
-            return roundedPoints;
         }
     }
 }
